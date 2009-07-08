@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="..\Bin\pin.exe"
 				WorkingDirectory="$(ProjectDir)"
-				CommandArguments="-t   &quot;$(TargetPath)&quot;   -- notepad.exe"
+				CommandArguments="-t   &quot;$(TargetPath)&quot;   -- rep.exe"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"
