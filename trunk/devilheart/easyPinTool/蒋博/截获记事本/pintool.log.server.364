@@ -1,0 +1,42 @@
+Pin 2.6 kit 27863
+W: dbghelp.dll version mismatch.
+     Loaded C:\WINDOWS\system32\dbghelp.dll version 5.1.2600.5512
+     Required version 6.9.3.113
+W: Failed to get module info for C:\WINDOWS\system32\notepad.exe
+W: Failed to get module info for d:\pin-2.6-27887-msvc8-ia32_intel64-windows\pin-2.6-27887-msvc8-ia32_intel64-windows\source\tools\Bin\pinvm.dll
+W: Failed to get module info for d:\pin-2.6-27887-msvc8-ia32_intel64-windows\pin-2.6-27887-msvc8-ia32_intel64-windows\source\tools\mypintool\debug\MyPinTool.dll
+W: Failed to get module info for C:\WINDOWS\AppPatch\AcGenral.DLL
+W: Failed to get module info for C:\WINDOWS\system32\UxTheme.dll
+W: Failed to get module info for C:\WINDOWS\system32\ShimEng.dll
+W: Failed to get module info for C:\WINDOWS\system32\LPK.DLL
+W: Failed to get module info for C:\WINDOWS\system32\WINSPOOL.DRV
+W: Failed to get module info for C:\WINDOWS\system32\USP10.dll
+W: Failed to get module info for C:\WINDOWS\system32\USERENV.dll
+W: Failed to get module info for C:\WINDOWS\system32\IMM32.DLL
+W: Failed to get module info for C:\WINDOWS\system32\comdlg32.dll
+W: Failed to get module info for C:\WINDOWS\system32\ole32.dll
+W: Failed to get module info for C:\WINDOWS\system32\WINMM.dll
+W: Failed to get module info for C:\WINDOWS\system32\OLEAUT32.dll
+W: Failed to get module info for C:\WINDOWS\WinSxS\x86_Microsoft.Windows.Common-Controls_6595b64144ccf1df_6.0.2600.5512_x-ww_35d4ce83\COMCTL32.dll
+W: Failed to get module info for C:\WINDOWS\system32\MSACM32.dll
+W: Failed to get module info for C:\WINDOWS\system32\VERSION.dll
+W: Failed to get module info for C:\WINDOWS\system32\msvcrt.dll
+W: Failed to get module info for C:\WINDOWS\system32\USER32.dll
+W: Failed to get module info for C:\WINDOWS\system32\ADVAPI32.dll
+W: Failed to get module info for C:\WINDOWS\system32\RPCRT4.dll
+W: Failed to get module info for C:\WINDOWS\system32\GDI32.dll
+W: Failed to get module info for C:\WINDOWS\system32\SHLWAPI.dll
+W: Failed to get module info for C:\WINDOWS\system32\Secur32.dll
+W: Failed to get module info for C:\WINDOWS\system32\kernel32.dll
+W: Failed to get module info for C:\WINDOWS\system32\ntdll.dll
+W: Failed to get module info for C:\WINDOWS\system32\SHELL32.dll
+W: Failed to get module info for C:\WINDOWS\system32\MSCTF.dll
+W: Failed to get module info for C:\WINDOWS\DOWNLO~1\BDPlugin.dll
+W: Failed to get module info for C:\WINDOWS\system32\msctfime.ime
+W: Failed to get module info for C:\WINDOWS\system32\CLBCATQ.DLL
+W: Failed to get module info for C:\WINDOWS\system32\COMRes.dll
+W: Failed to get module info for C:\WINDOWS\system32\WatchHookNT.dll
+W: Failed to get module info for C:\WINDOWS\system32\CProtect.dll
+W: Failed to get module info for C:\WINDOWS\system32\imagehlp.dll
+W: Failed to get module info for C:\WINDOWS\system32\PSAPI.DLL
+W: Failed to get module info for C:\Program Files\windows journal\nbmaptip.dll
