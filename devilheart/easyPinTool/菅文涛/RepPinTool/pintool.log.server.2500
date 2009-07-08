@@ -1,0 +1,12 @@
+Pin 2.6 kit 27863
+W: dbghelp.dll version mismatch.
+     Loaded C:\WINDOWS\system32\dbghelp.dll version 5.1.2600.5512
+     Required version 6.9.3.113
+W: Failed to get module info for C:\WINDOWS\system32\rep.exe
+W: Failed to get module info for f:\TDDOWNLOAD\pin-2.6-27887-msvc8-ia32_intel64-windows\source\tools\Bin\pinvm.dll
+W: Failed to get module info for f:\TDDOWNLOAD\pin-2.6-27887-msvc8-ia32_intel64-windows\source\tools\MyPinTool\Debug\MyPinTool.dll
+W: Failed to get module info for C:\WINDOWS\system32\ADVAPI32.DLL
+W: Failed to get module info for C:\WINDOWS\system32\RPCRT4.dll
+W: Failed to get module info for C:\WINDOWS\system32\Secur32.dll
+W: Failed to get module info for C:\WINDOWS\system32\kernel32.dll
+W: Failed to get module info for C:\WINDOWS\system32\ntdll.dll
