@@ -1,0 +1,89 @@
+The system is: Windows - 6.0 - x86
+Determining if the C compiler works passed with the following output:
+Change Dir: D:/summer/devilheart/project/CMakeFiles/CMakeTmp
+
+Run Build Command:D:\PROGRA~1\MICROS~2\Common7\IDE\devenv.com CMAKE_TRY_COMPILE.sln /build Debug /project cmTryCompileExec
+
+Microsoft (R) Visual Studio 8.0.50727.762 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: cmTryCompileExec, 配置: Debug Win32 ------
+1>正在编译...
+1>用于 80x86 的 Microsoft (R) 32 位 C/C++ 优化编译器 14.00.50727.762 版
+1>版权所有(C) Microsoft Corporation。保留所有权利。
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /RTC1 /MDd /Fo"cmTryCompileExec.dir\Debug\\" /Fd"D:/summer/devilheart/project/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec.pdb" /W3 /c /Zi /TC   /Zm1000
+1>   .\testCCompiler.c
+1>testCCompiler.c
+1>正在编译资源清单...
+1>正在链接...
+1>正在嵌入清单...
+1>生成日志保存在“file://d:\summer\devilheart\project\CMakeFiles\CMakeTmp\cmTryCompileExec.dir\Debug\BuildLog.htm”
+1>cmTryCompileExec - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: D:/summer/devilheart/project/CMakeFiles/CMakeTmp
+
+Run Build Command:D:\PROGRA~1\MICROS~2\Common7\IDE\devenv.com CMAKE_TRY_COMPILE.sln /build Debug /project cmTryCompileExec
+
+Microsoft (R) Visual Studio 8.0.50727.762 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: cmTryCompileExec, 配置: Debug Win32 ------
+1>正在编译...
+1>用于 80x86 的 Microsoft (R) 32 位 C/C++ 优化编译器 14.00.50727.762 版
+1>版权所有(C) Microsoft Corporation。保留所有权利。
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /RTC1 /MDd /Fo"cmTryCompileExec.dir\Debug\\" /Fd"D:/summer/devilheart/project/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec.pdb" /W3 /c /Zi /TC   /Zm1000
+1>   "..\..\..\..\..\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompilerABI.c"
+1>CMakeCCompilerABI.c
+1>正在编译资源清单...
+1>正在链接...
+1>正在嵌入清单...
+1>生成日志保存在“file://d:\summer\devilheart\project\CMakeFiles\CMakeTmp\cmTryCompileExec.dir\Debug\BuildLog.htm”
+1>cmTryCompileExec - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: D:/summer/devilheart/project/CMakeFiles/CMakeTmp
+
+Run Build Command:D:\PROGRA~1\MICROS~2\Common7\IDE\devenv.com CMAKE_TRY_COMPILE.sln /build Debug /project cmTryCompileExec
+
+Microsoft (R) Visual Studio 8.0.50727.762 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: cmTryCompileExec, 配置: Debug Win32 ------
+1>正在编译...
+1>用于 80x86 的 Microsoft (R) 32 位 C/C++ 优化编译器 14.00.50727.762 版
+1>版权所有(C) Microsoft Corporation。保留所有权利。
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /EHsc /RTC1 /MDd /Fo"cmTryCompileExec.dir\Debug\\" /Fd"D:/summer/devilheart/project/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec.pdb" /W3 /c /Zi /TP   /Zm1000
+1>   .\testCXXCompiler.cxx
+1>testCXXCompiler.cxx
+1>正在编译资源清单...
+1>正在链接...
+1>正在嵌入清单...
+1>生成日志保存在“file://d:\summer\devilheart\project\CMakeFiles\CMakeTmp\cmTryCompileExec.dir\Debug\BuildLog.htm”
+1>cmTryCompileExec - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: D:/summer/devilheart/project/CMakeFiles/CMakeTmp
+
+Run Build Command:D:\PROGRA~1\MICROS~2\Common7\IDE\devenv.com CMAKE_TRY_COMPILE.sln /build Debug /project cmTryCompileExec
+
+Microsoft (R) Visual Studio 8.0.50727.762 版。
+版权所有 (C) Microsoft Corp 1984-2005。保留所有权利。
+1>------ 已启动生成: 项目: cmTryCompileExec, 配置: Debug Win32 ------
+1>正在编译...
+1>用于 80x86 的 Microsoft (R) 32 位 C/C++ 优化编译器 14.00.50727.762 版
+1>版权所有(C) Microsoft Corporation。保留所有权利。
+1>cl /Od /D "WIN32" /D "_WINDOWS" /D "_DEBUG" /D "CMAKE_INTDIR=\"Debug\"" /D "_MBCS" /FD /EHsc /RTC1 /MDd /Fo"cmTryCompileExec.dir\Debug\\" /Fd"D:/summer/devilheart/project/CMakeFiles/CMakeTmp/Debug/cmTryCompileExec.pdb" /W3 /c /Zi /TP   /Zm1000
+1>   "..\..\..\..\..\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompilerABI.cpp"
+1>CMakeCXXCompilerABI.cpp
+1>正在编译资源清单...
+1>正在链接...
+1>正在嵌入清单...
+1>生成日志保存在“file://d:\summer\devilheart\project\CMakeFiles\CMakeTmp\cmTryCompileExec.dir\Debug\BuildLog.htm”
+1>cmTryCompileExec - 0 个错误，0 个警告
+========== 生成: 1 已成功, 0 已失败, 0 最新, 0 已跳过 ==========
+
+
