@@ -1,14 +1,19 @@
-<?xml version="1.0" encoding = "Windows-1252"?>
+<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="devilheart"
 	ProjectGUID="{0C7EA5D2-14BB-40D4-9CAA-F32E3C5AA35A}"
-	Keyword="Win32Proj">
+	RootNamespace="devilheart"
+	Keyword="Win32Proj"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
@@ -16,64 +21,102 @@
 			IntermediateDirectory="devilheart.dir\Debug"
 			ConfigurationType="2"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions=" /Zm1000 /wd4100 /wd4127 /wd4054"
-				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
-				BasicRuntimeChecks="3"
-				BufferSecurityCheck="FALSE"
-				CompileAs="2"
-				DebugInformationFormat="3"
-				ExceptionHandling="1"
-				InlineFunctionExpansion="0"
-				Optimization="0"
-				RuntimeLibrary="3"
-				RuntimeTypeInfo="TRUE"
-				WarningLevel="3"
-				PreprocessorDefinitions="_DEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Debug\&quot;,devilheart_EXPORTS"
-				AssemblerListingLocation="Debug"
-				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="D:/summer/devilheart/project/bin/Debug/devilheart.pdb"
-/>
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
-				PreprocessorDefinitions="_DEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Debug\&quot;,devilheart_EXPORTS"/>
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Debug\&quot;,devilheart_EXPORTS"
-				MkTypLibCompatible="FALSE"
+				MkTypLibCompatible="false"
 				TargetEnvironment="1"
-				GenerateStublessProxies="TRUE"
+				GenerateStublessProxies="true"
 				TypeLibraryName="$(InputName).tlb"
 				OutputDirectory="$(IntDir)"
 				HeaderFileName="$(InputName).h"
 				DLLDataFileName=""
 				InterfaceIdentifierFileName="$(InputName)_i.c"
-				ProxyFileName="$(InputName)_p.c"/>
+				ProxyFileName="$(InputName)_p.c"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCCLCompilerTool"
+				AdditionalOptions=" /Zm1000 /wd4100 /wd4127 /wd4054"
+				Optimization="0"
+				InlineFunctionExpansion="0"
+				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
+				PreprocessorDefinitions="_DEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Debug\&quot;,devilheart_EXPORTS"
+				ExceptionHandling="1"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				BufferSecurityCheck="false"
+				RuntimeTypeInfo="true"
+				AssemblerListingLocation="Debug"
+				ObjectFile="$(IntDir)\"
+				ProgramDataBaseFileName="D:/summer/devilheart/project/bin/Debug/devilheart.pdb"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CompileAs="2"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"
-CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usage: pass to drdeploy: -client D:/summer/devilheart/project/bin/$(OutDir)/devilheart.dll 0 \&quot;\&quot;&quot;"/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Debug\&quot;,devilheart_EXPORTS"
+				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386 /debug /nodefaultlib /noentry"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  \DynamoRIO-Windows-1.4.0-20\lib32\release\dynamorio.lib "
 				OutputFile="D:\summer\devilheart\project\bin\Debug\devilheart.dll"
 				Version="0.0"
-				GenerateManifest="TRUE"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="D:\summer\devilheart\project\bin\Debug\devilheart.pdb"
-				GenerateDebugInformation="TRUE"
-				ImportLibrary="D:\summer\devilheart\project\bin\Debug\devilheart.lib"/>
+				GenerateManifest="true"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="D:\summer\devilheart\project\bin\Debug\devilheart.pdb"
+				ImportLibrary="D:\summer\devilheart\project\bin\Debug\devilheart.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usage: pass to drdeploy: -client D:/summer/devilheart/project/bin/$(OutDir)/devilheart.dll 0 \&quot;\&quot;&quot;"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -81,61 +124,99 @@ CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usag
 			IntermediateDirectory="devilheart.dir\Release"
 			ConfigurationType="2"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions=" /Zm1000 /wd4100 /wd4127 /wd4054"
-				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
-				BufferSecurityCheck="FALSE"
-				CompileAs="2"
-				ExceptionHandling="1"
-				InlineFunctionExpansion="2"
-				Optimization="2"
-				RuntimeLibrary="2"
-				RuntimeTypeInfo="TRUE"
-				WarningLevel="3"
-				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Release\&quot;,devilheart_EXPORTS"
-				AssemblerListingLocation="Release"
-				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="D:/summer/devilheart/project/bin/Release/devilheart.pdb"
-/>
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
-				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Release\&quot;,devilheart_EXPORTS"/>
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Release\&quot;,devilheart_EXPORTS"
-				MkTypLibCompatible="FALSE"
+				MkTypLibCompatible="false"
 				TargetEnvironment="1"
-				GenerateStublessProxies="TRUE"
+				GenerateStublessProxies="true"
 				TypeLibraryName="$(InputName).tlb"
 				OutputDirectory="$(IntDir)"
 				HeaderFileName="$(InputName).h"
 				DLLDataFileName=""
 				InterfaceIdentifierFileName="$(InputName)_i.c"
-				ProxyFileName="$(InputName)_p.c"/>
+				ProxyFileName="$(InputName)_p.c"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCCLCompilerTool"
+				AdditionalOptions=" /Zm1000 /wd4100 /wd4127 /wd4054"
+				Optimization="2"
+				InlineFunctionExpansion="2"
+				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
+				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Release\&quot;,devilheart_EXPORTS"
+				ExceptionHandling="1"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
+				RuntimeTypeInfo="true"
+				AssemblerListingLocation="Release"
+				ObjectFile="$(IntDir)\"
+				ProgramDataBaseFileName="D:/summer/devilheart/project/bin/Release/devilheart.pdb"
+				WarningLevel="3"
+				CompileAs="2"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"
-CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usage: pass to drdeploy: -client D:/summer/devilheart/project/bin/$(OutDir)/devilheart.dll 0 \&quot;\&quot;&quot;"/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;Release\&quot;,devilheart_EXPORTS"
+				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386 /nodefaultlib /noentry"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  \DynamoRIO-Windows-1.4.0-20\lib32\release\dynamorio.lib "
 				OutputFile="D:\summer\devilheart\project\bin\Release\devilheart.dll"
 				Version="0.0"
-				GenerateManifest="TRUE"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="D:\summer\devilheart\project\bin\Release\devilheart.pdb"
-				ImportLibrary="D:\summer\devilheart\project\bin\Release\devilheart.lib"/>
+				GenerateManifest="true"
+				ProgramDatabaseFile="D:\summer\devilheart\project\bin\Release\devilheart.pdb"
+				ImportLibrary="D:\summer\devilheart\project\bin\Release\devilheart.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usage: pass to drdeploy: -client D:/summer/devilheart/project/bin/$(OutDir)/devilheart.dll 0 \&quot;\&quot;&quot;"
+			/>
 		</Configuration>
 		<Configuration
 			Name="MinSizeRel|Win32"
@@ -143,61 +224,99 @@ CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usag
 			IntermediateDirectory="devilheart.dir\MinSizeRel"
 			ConfigurationType="2"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions=" /Zm1000 /wd4100 /wd4127 /wd4054"
-				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
-				BufferSecurityCheck="FALSE"
-				CompileAs="2"
-				ExceptionHandling="1"
-				InlineFunctionExpansion="1"
-				Optimization="1"
-				RuntimeLibrary="2"
-				RuntimeTypeInfo="TRUE"
-				WarningLevel="3"
-				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;MinSizeRel\&quot;,devilheart_EXPORTS"
-				AssemblerListingLocation="MinSizeRel"
-				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="D:/summer/devilheart/project/bin/MinSizeRel/devilheart.pdb"
-/>
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
-				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;MinSizeRel\&quot;,devilheart_EXPORTS"/>
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;MinSizeRel\&quot;,devilheart_EXPORTS"
-				MkTypLibCompatible="FALSE"
+				MkTypLibCompatible="false"
 				TargetEnvironment="1"
-				GenerateStublessProxies="TRUE"
+				GenerateStublessProxies="true"
 				TypeLibraryName="$(InputName).tlb"
 				OutputDirectory="$(IntDir)"
 				HeaderFileName="$(InputName).h"
 				DLLDataFileName=""
 				InterfaceIdentifierFileName="$(InputName)_i.c"
-				ProxyFileName="$(InputName)_p.c"/>
+				ProxyFileName="$(InputName)_p.c"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCCLCompilerTool"
+				AdditionalOptions=" /Zm1000 /wd4100 /wd4127 /wd4054"
+				Optimization="1"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
+				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;MinSizeRel\&quot;,devilheart_EXPORTS"
+				ExceptionHandling="1"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
+				RuntimeTypeInfo="true"
+				AssemblerListingLocation="MinSizeRel"
+				ObjectFile="$(IntDir)\"
+				ProgramDataBaseFileName="D:/summer/devilheart/project/bin/MinSizeRel/devilheart.pdb"
+				WarningLevel="3"
+				CompileAs="2"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"
-CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usage: pass to drdeploy: -client D:/summer/devilheart/project/bin/$(OutDir)/devilheart.dll 0 \&quot;\&quot;&quot;"/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;MinSizeRel\&quot;,devilheart_EXPORTS"
+				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386 /nodefaultlib /noentry"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  \DynamoRIO-Windows-1.4.0-20\lib32\release\dynamorio.lib "
 				OutputFile="D:\summer\devilheart\project\bin\MinSizeRel\devilheart.dll"
 				Version="0.0"
-				GenerateManifest="TRUE"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="D:\summer\devilheart\project\bin\MinSizeRel\devilheart.pdb"
-				ImportLibrary="D:\summer\devilheart\project\bin\MinSizeRel\devilheart.lib"/>
+				GenerateManifest="true"
+				ProgramDatabaseFile="D:\summer\devilheart\project\bin\MinSizeRel\devilheart.pdb"
+				ImportLibrary="D:\summer\devilheart\project\bin\MinSizeRel\devilheart.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usage: pass to drdeploy: -client D:/summer/devilheart/project/bin/$(OutDir)/devilheart.dll 0 \&quot;\&quot;&quot;"
+			/>
 		</Configuration>
 		<Configuration
 			Name="RelWithDebInfo|Win32"
@@ -205,112 +324,174 @@ CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usag
 			IntermediateDirectory="devilheart.dir\RelWithDebInfo"
 			ConfigurationType="2"
 			UseOfMFC="0"
-			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			>
 			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalOptions=" /Zm1000 /wd4100 /wd4127 /wd4054"
-				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
-				BufferSecurityCheck="FALSE"
-				CompileAs="2"
-				DebugInformationFormat="3"
-				ExceptionHandling="1"
-				InlineFunctionExpansion="1"
-				Optimization="2"
-				RuntimeLibrary="2"
-				RuntimeTypeInfo="TRUE"
-				WarningLevel="3"
-				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;RelWithDebInfo\&quot;,devilheart_EXPORTS"
-				AssemblerListingLocation="RelWithDebInfo"
-				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="D:/summer/devilheart/project/bin/RelWithDebInfo/devilheart.pdb"
-/>
+				Name="VCPreBuildEventTool"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
-				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;RelWithDebInfo\&quot;,devilheart_EXPORTS"/>
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;RelWithDebInfo\&quot;,devilheart_EXPORTS"
-				MkTypLibCompatible="FALSE"
+				MkTypLibCompatible="false"
 				TargetEnvironment="1"
-				GenerateStublessProxies="TRUE"
+				GenerateStublessProxies="true"
 				TypeLibraryName="$(InputName).tlb"
 				OutputDirectory="$(IntDir)"
 				HeaderFileName="$(InputName).h"
 				DLLDataFileName=""
 				InterfaceIdentifierFileName="$(InputName)_i.c"
-				ProxyFileName="$(InputName)_p.c"/>
+				ProxyFileName="$(InputName)_p.c"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCCLCompilerTool"
+				AdditionalOptions=" /Zm1000 /wd4100 /wd4127 /wd4054"
+				Optimization="2"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
+				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;RelWithDebInfo\&quot;,devilheart_EXPORTS"
+				ExceptionHandling="1"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="false"
+				RuntimeTypeInfo="true"
+				AssemblerListingLocation="RelWithDebInfo"
+				ObjectFile="$(IntDir)\"
+				ProgramDataBaseFileName="D:/summer/devilheart/project/bin/RelWithDebInfo/devilheart.pdb"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CompileAs="2"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"
-CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usage: pass to drdeploy: -client D:/summer/devilheart/project/bin/$(OutDir)/devilheart.dll 0 \&quot;\&quot;&quot;"/>
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG,WIN32,_WINDOWS,X86_32,WINDOWS,SHOW_RESULTS,_CRT_SECURE_NO_WARNINGS,CMAKE_INTDIR=\&quot;RelWithDebInfo\&quot;,devilheart_EXPORTS"
+				AdditionalIncludeDirectories="\DynamoRIO-Windows-1.4.0-20\cmake\..\include;"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386 /debug /nodefaultlib /noentry"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  \DynamoRIO-Windows-1.4.0-20\lib32\release\dynamorio.lib "
 				OutputFile="D:\summer\devilheart\project\bin\RelWithDebInfo\devilheart.dll"
 				Version="0.0"
-				GenerateManifest="TRUE"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="D:\summer\devilheart\project\bin\RelWithDebInfo\devilheart.pdb"
-				GenerateDebugInformation="TRUE"
-				ImportLibrary="D:\summer\devilheart\project\bin\RelWithDebInfo\devilheart.lib"/>
+				GenerateManifest="true"
+				GenerateDebugInformation="true"
+				ProgramDatabaseFile="D:\summer\devilheart\project\bin\RelWithDebInfo\devilheart.pdb"
+				ImportLibrary="D:\summer\devilheart\project\bin\RelWithDebInfo\devilheart.lib"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -E echo &quot;Usage: pass to drdeploy: -client D:/summer/devilheart/project/bin/$(OutDir)/devilheart.dll 0 \&quot;\&quot;&quot;"
+			/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
-			<File
-				RelativePath="D:\summer\devilheart\project\CMakeLists.txt">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-					Name="VCCustomBuildTool"
-					Description="Building Custom Rule D:/summer/devilheart/project/CMakeLists.txt"
-					CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -HD:/summer/devilheart/project -BD:/summer/devilheart/project --check-stamp-file CMakeFiles/generate.stamp"
-					AdditionalDependencies="D:\summer\devilheart\project\CMakeLists.txt;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeVS8FindMake.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineSystem.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystem.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeSystem.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCXXCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeRCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompilerABI.c&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompilerABI.cpp&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfigVersion.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfig.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32-noconfig.cmake;D:\summer\devilheart\project\CMakeLists.txt;"
-					Outputs="CMakeFiles\generate.stamp"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-					Name="VCCustomBuildTool"
-					Description="Building Custom Rule D:/summer/devilheart/project/CMakeLists.txt"
-					CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -HD:/summer/devilheart/project -BD:/summer/devilheart/project --check-stamp-file CMakeFiles/generate.stamp"
-					AdditionalDependencies="D:\summer\devilheart\project\CMakeLists.txt;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeVS8FindMake.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineSystem.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystem.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeSystem.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCXXCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeRCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompilerABI.c&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompilerABI.cpp&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfigVersion.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfig.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32-noconfig.cmake;D:\summer\devilheart\project\CMakeLists.txt;"
-					Outputs="CMakeFiles\generate.stamp"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MinSizeRel|Win32">
-					<Tool
-					Name="VCCustomBuildTool"
-					Description="Building Custom Rule D:/summer/devilheart/project/CMakeLists.txt"
-					CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -HD:/summer/devilheart/project -BD:/summer/devilheart/project --check-stamp-file CMakeFiles/generate.stamp"
-					AdditionalDependencies="D:\summer\devilheart\project\CMakeLists.txt;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeVS8FindMake.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineSystem.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystem.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeSystem.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCXXCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeRCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompilerABI.c&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompilerABI.cpp&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfigVersion.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfig.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32-noconfig.cmake;D:\summer\devilheart\project\CMakeLists.txt;"
-					Outputs="CMakeFiles\generate.stamp"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="RelWithDebInfo|Win32">
-					<Tool
-					Name="VCCustomBuildTool"
-					Description="Building Custom Rule D:/summer/devilheart/project/CMakeLists.txt"
-					CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -HD:/summer/devilheart/project -BD:/summer/devilheart/project --check-stamp-file CMakeFiles/generate.stamp"
-					AdditionalDependencies="D:\summer\devilheart\project\CMakeLists.txt;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeVS8FindMake.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineSystem.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystem.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeSystem.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCXXCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeRCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompilerABI.c&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompilerABI.cpp&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfigVersion.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfig.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32-noconfig.cmake;D:\summer\devilheart\project\CMakeLists.txt;"
-					Outputs="CMakeFiles\generate.stamp"/>
-				</FileConfiguration>
-			</File>
 		<Filter
 			Name="Source Files"
-			Filter="">
+			>
 			<File
-				RelativePath="D:\summer\devilheart\project\devilheart.cpp">
+				RelativePath="D:\summer\devilheart\project\devilheart.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mem_recorder.cpp"
+				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Header Files"
+			>
+			<File
+				RelativePath=".\mem_recorder.h"
+				>
+			</File>
+		</Filter>
+		<File
+			RelativePath="D:\summer\devilheart\project\CMakeLists.txt"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule D:/summer/devilheart/project/CMakeLists.txt"
+					CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -HD:/summer/devilheart/project -BD:/summer/devilheart/project --check-stamp-file CMakeFiles/generate.stamp&#x0D;&#x0A;"
+					AdditionalDependencies="D:\summer\devilheart\project\CMakeLists.txt;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeVS8FindMake.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineSystem.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystem.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeSystem.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCXXCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeRCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompilerABI.c&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompilerABI.cpp&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfigVersion.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfig.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32-noconfig.cmake;D:\summer\devilheart\project\CMakeLists.txt;"
+					Outputs="CMakeFiles\generate.stamp"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule D:/summer/devilheart/project/CMakeLists.txt"
+					CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -HD:/summer/devilheart/project -BD:/summer/devilheart/project --check-stamp-file CMakeFiles/generate.stamp&#x0D;&#x0A;"
+					AdditionalDependencies="D:\summer\devilheart\project\CMakeLists.txt;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeVS8FindMake.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineSystem.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystem.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeSystem.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCXXCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeRCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompilerABI.c&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompilerABI.cpp&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfigVersion.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfig.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32-noconfig.cmake;D:\summer\devilheart\project\CMakeLists.txt;"
+					Outputs="CMakeFiles\generate.stamp"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="MinSizeRel|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule D:/summer/devilheart/project/CMakeLists.txt"
+					CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -HD:/summer/devilheart/project -BD:/summer/devilheart/project --check-stamp-file CMakeFiles/generate.stamp&#x0D;&#x0A;"
+					AdditionalDependencies="D:\summer\devilheart\project\CMakeLists.txt;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeVS8FindMake.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineSystem.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystem.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeSystem.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCXXCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeRCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompilerABI.c&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompilerABI.cpp&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfigVersion.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfig.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32-noconfig.cmake;D:\summer\devilheart\project\CMakeLists.txt;"
+					Outputs="CMakeFiles\generate.stamp"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="RelWithDebInfo|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building Custom Rule D:/summer/devilheart/project/CMakeLists.txt"
+					CommandLine="&quot;d:\Programes\CMake 2.6\bin\cmake.exe&quot; -HD:/summer/devilheart/project -BD:/summer/devilheart/project --check-stamp-file CMakeFiles/generate.stamp&#x0D;&#x0A;"
+					AdditionalDependencies="D:\summer\devilheart\project\CMakeLists.txt;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeVS8FindMake.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineSystem.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystem.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeSystem.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeFindBinUtils.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeCXXCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCCompiler.cmake.in&quot;;D:\summer\devilheart\project\CMakeFiles\CMakeRCCompiler.cmake;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestRCCompiler.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompilerABI.c&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCCompiler.cmake.in&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeTestCXXCompiler.cmake&quot;;&quot;D:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeDetermineCompilerABI.cmake&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompilerABI.cpp&quot;;&quot;d:\Programes\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXCompiler.cmake.in&quot;;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfigVersion.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOConfig.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32.cmake;\DynamoRIO-Windows-1.4.0-20\cmake\DynamoRIOTarget32-noconfig.cmake;D:\summer\devilheart\project\CMakeLists.txt;"
+					Outputs="CMakeFiles\generate.stamp"
+				/>
+			</FileConfiguration>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
