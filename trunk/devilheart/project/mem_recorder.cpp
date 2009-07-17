@@ -9,6 +9,7 @@
 *******************************************************************/
 
 #include "mem_recorder.h"
+#include   <math.h>   
 
 
 /******************************************************************
@@ -48,21 +49,29 @@ MemoryRecorder::MemoryRecorder(int size)
 unsigned int MemoryRecorder::isTainted(unsigned int address)
 {
 	
+	int location=(address-minAddress)/sizeOfPage;
+	
+	MemNode* node = memoryList[location];
+  
+	if (node==NULL)
+		return 0;
+	
+	else{
+    
+	while( (address>(node->address+31)) | (address<(node->address)))
+		node=node->nextNode;
 
-	while((*memoryList)->address!=address)
-		(*memoryList)=(*memoryList)->nextNode;
+	int section=address-(node->address);
 	
-	
-	
-	if((*memoryList)->state==1)
+	if( ((node->state>>section)&0x1) ==1)
 			return 1;//1 is taited
-		if((*memoryList)->state==0)
+	if( ((node->state>>section)&0x1) ==0)
 			return 0;//0 is not taited
 	
 	
 	}
 
-
+}
 
 /******************************************************************
  Title:markTaintedMemory
@@ -77,19 +86,23 @@ unsigned int MemoryRecorder::isTainted(unsigned int address)
 bool MemoryRecorder::markTaintedMemory(unsigned int address)
 {
 	
-	while((*memoryList)->address!=address)
-		(*memoryList)=(*memoryList)->nextNode;
+	int location=(address-minAddress)/sizeOfPage;
 	
-	
-	
-	if((*memoryList)->state==1)
-			return false;//The memory in the address is already tainted
-		if((*memoryList)->state==0)
-		{  
-			(*memoryList)->state=1;
-			return true;//Mark the memory in the address tainted successfully
+	MemNode* node = memoryList[location];
 
-		}
+   while( (address>(node->address+31)) | (address<(node->address)))
+		node=node->nextNode;
+
+	int section=address-(node->address);
+	
+	if( ((node->state>>section)&0x1) ==1)
+			return false;//The memory in the address is already tainted.
+	
+	if( ((node->state>>section)&0x1) ==0){
+		
+		    node->state=node->state|(int)(pow(2.0,section-1.0));
+			return true;//
+	}
 }
 
 
@@ -106,19 +119,20 @@ bool MemoryRecorder::markTaintedMemory(unsigned int address)
 bool MemoryRecorder::dismarkTaintedMemory(unsigned int address)
 {
 
-	while((*memoryList)->address!=address)
-		(*memoryList)=(*memoryList)->nextNode;
+	int location=(address-minAddress)/sizeOfPage;
 	
-	
-	
-	if((*memoryList)->state==0)
-			return false;//The memory in the address is not tainted
-		if((*memoryList)->state==1)
-		{
-			(*memoryList)->state==0;
-			return true;//Dismark the memory in the address tainted successfully
+	MemNode* node = memoryList[location];
 
-		}
+    while( (address>(node->address+31)) | (address<(node->address)))
+		node=node->nextNode;
+
+	int section=address-(node->address);
+	
+	if( ((node->state>>section)&0x1) ==0)
+			return false;//The memory in the address is not tainted.
+	if( ((node->state>>section)&0x1) ==1)
+			return true;//
+	
 }
 
 
