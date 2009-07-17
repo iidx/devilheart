@@ -59,7 +59,6 @@ public:
 	/* Return whether the memory in this address is
 	   tainted or not                              */
 	unsigned int isTainted(unsigned int address);
-
 	/* Mark the memroy in the address to be tainted*/
 	bool markTaintedMemory(unsigned int address);
 
