@@ -5,7 +5,7 @@
  Description:
  Define some data structors to record the state of memory in size of
  4G at most.
- Version: 1.0
+ Version: 1.1
  Date and author: 2009.07.16 hsqfire
 *******************************************************************/
 
@@ -21,7 +21,7 @@
 struct MemNode;
 
 struct MemNode{
-	/* An unsigned integer to record the state of 8 
+	/* An unsigned integer to record the state of 32 
 	   continuous bytes in memory.
 	   Here the lower bit represents the lower byte 
 	   of the memory. 
@@ -33,7 +33,7 @@ struct MemNode{
 	   the represented memory.                     */
 	unsigned int address;
 
-	/* Pointer to next 8 continuous bytes in memory*/
+	/* Pointer to next 32 continuous bytes in memory*/
 	MemNode *nextNode;
 };
 
@@ -45,6 +45,8 @@ class MemoryRecorder{
 private:
 	int amountOfPage;         /* amount of pages   */
 	int sizeOfPage;           /* size of a page    */
+	unsigned int minAddress;  /* minimun address   */
+	unsigned int maxAddress;  /* maximun address   */
 	MemNode *(*memoryList);   /* MemNode lists     */
 
 public:
