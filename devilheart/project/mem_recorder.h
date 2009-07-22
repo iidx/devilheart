@@ -15,7 +15,15 @@
 #include <stdlib.h>
 
 /* default size of one page in memory*/
-#define DEFALUT_PAGE_SIZE 1024
+#define DEFAULT_PAGE_SIZE 1024
+
+/* default min address and max address*/
+#define DEFAULT_MIN_ADDRESS 0
+#define DEFAULT_MAX_ADDRESS 0xffffffff
+
+/* wrong memory address              */
+#define FAULTADDRESS -1
+
 
 /* Struct to represent 8 continuous bytes in memory*/
 struct MemNode;
@@ -55,6 +63,9 @@ public:
 
 	/* Constructor with sizeOfPage argument        */
 	MemoryRecorder(int size);
+
+	/* Constructor with 3 arguments                */
+	MemoryRecorder(int minAdd,int maxAdd,int size);
 
 	/* Return whether the memory in this address is
 	   tainted or not                              */
