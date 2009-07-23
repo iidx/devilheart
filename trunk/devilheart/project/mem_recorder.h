@@ -76,8 +76,17 @@ public:
 	/* Dismark the memroy in this address          */
 	bool dismarkTaintedMemory(unsigned int address);
 
-	/* reset the state of memory                   */
+	/* Reset the state of memory                   */
 	void clearState();
+
+	/* Mark a block of continuous memory           */
+	bool markTaintedBlock(unsigned int address, int length);
+
+	/* dismark a block of continuous memory           */
+	bool dismarkTaintedBlock(unsigned int address, int length);
+
+	/* Mark a block of continuous memory with the state*/
+	bool dismarkTaintedBlock(unsigned int address, int length,int state);
 };
 
 #endif
