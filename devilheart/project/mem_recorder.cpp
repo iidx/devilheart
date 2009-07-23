@@ -20,14 +20,20 @@
 ******************************************************************/
 MemoryRecorder::MemoryRecorder()
 {
-	sizeOfPage = DEFAULT_PAGE_SIZE;
+
+    sizeOfPage = DEFAULT_PAGE_SIZE;
 	this->minAddress = DEFAULT_MIN_ADDRESS;
 	this->maxAddress = DEFAULT_MAX_ADDRESS;
-	amountOfPage = (minAddress-maxAddress)/sizeOfPage;
+
+	if((maxAddress-minAddress)%sizeOfPage==0)
+	    amountOfPage = (maxAddress-minAddress)/sizeOfPage;
+	else
+        amountOfPage = (maxAddress-minAddress)/sizeOfPage+1;
 	memoryList = (MemNode**)malloc(sizeof(MemNode*)*amountOfPage);
 	for(int i=0;i<amountOfPage;i++){
 		memoryList[i]=NULL;
 	}
+
 }
 
 /******************************************************************
@@ -44,7 +50,10 @@ MemoryRecorder::MemoryRecorder(int size)
 	this->maxAddress = DEFAULT_MAX_ADDRESS;
 	if(((unsigned int)size)>maxAddress-minAddress)
 		sizeOfPage = DEFAULT_PAGE_SIZE;
-	amountOfPage = (minAddress-maxAddress)/sizeOfPage;
+	if((maxAddress-minAddress)%sizeOfPage==0)
+	    amountOfPage = (maxAddress-minAddress)/sizeOfPage;
+	else
+        amountOfPage = (maxAddress-minAddress)/sizeOfPage+1;
 	memoryList = (MemNode**)malloc(sizeof(MemNode*)*amountOfPage);
 	for(int i=0;i<amountOfPage;i++){
 		memoryList[i]=NULL;
@@ -67,7 +76,10 @@ MemoryRecorder::MemoryRecorder(int minAdd,int maxAdd,int size)
 	this->maxAddress = maxAdd;
 	if(((unsigned int)size)>maxAddress-minAddress)
 		sizeOfPage = DEFAULT_PAGE_SIZE;
-	amountOfPage = (minAddress-maxAddress)/sizeOfPage;
+	if((maxAddress-minAddress)%sizeOfPage==0)
+	    amountOfPage = (maxAddress-minAddress)/sizeOfPage;
+	else
+        amountOfPage = (maxAddress-minAddress)/sizeOfPage+1;
 	memoryList = (MemNode**)malloc(sizeof(MemNode*)*amountOfPage);
 	for(int i=0;i<amountOfPage;i++){
 		memoryList[i]=NULL;
@@ -138,7 +150,7 @@ bool MemoryRecorder::markTaintedMemory(unsigned int address)
 		//node=a;
 	} 
 	//The memory node in the address is not existed
-	if( (node==NULL) & ((address>(node->address+31)) | (address<(node->address)))){      
+	if( node==NULL ){      
 		 MemNode n;    
 		 int _address=address-address%32;
 		 int _state=0|(int)(pow(2.0,address%32-1.0));
@@ -181,12 +193,12 @@ bool MemoryRecorder::dismarkTaintedMemory(unsigned int address)
 	}
 	MemNode* a=node; //Pre node of the current node
 	//Find the memory node in the address
-	while( (a!=NULL) & ((address>(node->address+31)) | (address<(node->address)))  ){ 
+	while( (node!=NULL) & ((address>(node->address+31)) | (address<(node->address)))  ){ 
 		a = node;
 		node = node->nextNode;
 	}
 	//The memory node in the address is not existed
-	if( (node==NULL) & ((address>(node->address+31)) | (address<(node->address)))){       
+	if( node==NULL ){       
 		return false;
 	}
 	else{	
