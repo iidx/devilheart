@@ -219,6 +219,49 @@ bool MemoryRecorder::dismarkTaintedMemory(unsigned int address)
 }
 
 /******************************************************************
+ Title:markTaintedBlock
+ Function:Mark the memroy in the address to be tainted
+ Input:
+ unsigned int address:The first address of the block.
+ int length:The length of the block.
+ Output:
+ bool
+ Return value:true is successful, false means exception
+******************************************************************/
+bool MemoryRecorder::markTaintedBlock(unsigned int address, int length)
+{
+}
+
+/******************************************************************
+ Title:dismarkTaintedBlock
+ Function:Dismark the memroy in the address to be not tainted
+ Input:
+ unsigned int address:The first address of the block.
+ int length:The length of the block.
+ Output:
+ bool
+ Return value:true is successful, false means exception
+******************************************************************/
+bool MemoryRecorder::dismarkTaintedBlock(unsigned int address, int length)
+{
+}
+
+/******************************************************************
+ Title:markBlock
+ Function:Mark the memroy in the address to be tainted or not
+ Input:
+ unsigned int address:The first address of the block.
+ int length:The length of the block.
+ int State:1 means is marked tainted. 0 means is marked untainted.
+ Output:
+ bool
+ Return value:true is successful, false means such exception
+******************************************************************/
+bool MemoryRecorder::dismarkTaintedBlock(unsigned int address, int length)
+{
+}
+
+/******************************************************************
  Title:clearState
  Function:Reset the state of memory
  Input:
