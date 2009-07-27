@@ -45,8 +45,18 @@ MemoryRecorder::MemoryRecorder()
 ******************************************************************/
 MemoryRecorder::MemoryRecorder(int size)
 {
-	sizeOfPage = size;
-	this->minAddress = DEFAULT_MIN_ADDRESS;
+	
+	if(size%32==0)
+	     sizeOfPage = size;
+	else{
+	     if(size%32<16)
+			 sizeOfPage=size-size%32;
+		 else
+			 sizeOfPage=size-size%32+32;
+	
+	}
+
+    this->minAddress = DEFAULT_MIN_ADDRESS;
 	this->maxAddress = DEFAULT_MAX_ADDRESS;
 	if(((unsigned int)size)>maxAddress-minAddress)
 		sizeOfPage = DEFAULT_PAGE_SIZE;
@@ -71,7 +81,15 @@ MemoryRecorder::MemoryRecorder(int size)
 ******************************************************************/
 MemoryRecorder::MemoryRecorder(int minAdd,int maxAdd,int size)
 {
-	sizeOfPage = size;
+	if(size%32==0)
+	     sizeOfPage = size;
+	else{
+	     if(size%32<16)
+			 sizeOfPage=size-size%32;
+		 else
+			 sizeOfPage=size-size%32+32;
+	
+	}
 	this->minAddress = minAdd;
 	this->maxAddress = maxAdd;
 	if(((unsigned int)size)>maxAddress-minAddress)
@@ -102,7 +120,13 @@ unsigned int MemoryRecorder::isTainted(unsigned int address)
 	if(address<minAddress||address>maxAddress)
 		return FAULTADDRESS; //wrong memory address
 	int location=(address-minAddress)/sizeOfPage;
+
 	MemNode* node = memoryList[location];
+	if (node==NULL){
+		return 0; //The node does not exist
+	}
+	
+	
 	while( ((address>(node->address+31)) | (address<(node->address)))&&
 		node!=NULL)
 		node=node->nextNode;
@@ -134,11 +158,11 @@ bool MemoryRecorder::markTaintedMemory(unsigned int address)
 	//The list is empty
     if (node==NULL){
 		MemNode n;    
-		int _address=address-address%32;
-		int _state=0|(int)(pow(2.0,address%32-1.0));
-		n.address=_address;
+		int startNodeAddress=address-address%32;
+		int _state=0|(int)(pow(2.0,(double)(address%32)));
+		n.address=startNodeAddress;
 		n.state=_state;	 
-		n.nextNode = NULL;
+		n.nextNode = NULL;                                                   
 		memoryList[location]=&n;
 		return true;
 	}
@@ -152,9 +176,9 @@ bool MemoryRecorder::markTaintedMemory(unsigned int address)
 	//The memory node in the address is not existed
 	if( node==NULL ){      
 		 MemNode n;    
-		 int _address=address-address%32;
-		 int _state=0|(int)(pow(2.0,address%32-1.0));
-		 n.address=_address;
+		 int startNodeAddress=address-address%32;
+		 int _state=0|(int)(pow(2.0,(double)(address%32)));
+		 n.address=startNodeAddress;
 		 n.state=_state;
 		 n.nextNode = NULL;
 		 a->nextNode=&n;
@@ -163,9 +187,9 @@ bool MemoryRecorder::markTaintedMemory(unsigned int address)
 	else{	
 		int section=address-(node->address);
 		if( ((node->state>>section)&0x1) ==1)
-			return false;//The memory in the address is already tainted.
+			return true;//The memory in the address is already tainted.
 		else{ // ((node->state>>section)&0x1) ==0	
-			node->state=node->state|(int)(pow(2.0,section-1.0));
+			node->state=node->state|(int)(pow(2.0,(double)section));
 			return true;//Mark it tainted successfully
 		}
 	}
@@ -189,7 +213,7 @@ bool MemoryRecorder::dismarkTaintedMemory(unsigned int address)
 	int location=(address-minAddress)/sizeOfPage;
 	MemNode* node = memoryList[location];
 	if (node==NULL){
-		return false; //The node does not exist
+		return true; //The node does not exist
 	}
 	MemNode* a=node; //Pre node of the current node
 	//Find the memory node in the address
@@ -199,14 +223,14 @@ bool MemoryRecorder::dismarkTaintedMemory(unsigned int address)
 	}
 	//The memory node in the address is not existed
 	if( node==NULL ){       
-		return false;
+		return true;
 	}
 	else{	
 		int section=address-(node->address);	
 		if( ((node->state>>section)&0x1) ==0)
-			return false;//The memory in the address is not tainted.	
+			return true;//The memory in the address is not tainted.	
 		else{ // ((node->state>>section)&0x1) ==1         
-			node->state=node->state&(0xFFFFFFFF-(int)(pow(2.0,section-1.0)));
+			node->state=node->state&(0xFFFFFFFF-(int)(pow(2.0,(double)section)));
 			if(node->state!=0)
 				return true;//Dismark it successfully
 			else{ //state is 0,delete this node
@@ -229,9 +253,374 @@ bool MemoryRecorder::dismarkTaintedMemory(unsigned int address)
  Return value:true is successful, false means exception
 ******************************************************************/
 bool MemoryRecorder::markTaintedBlock(unsigned int address, int length)
-{
+{   
+	
+	if(length==1){
+		markTaintedMemory(address);
+	}
+	
+	if(address<minAddress||address>maxAddress)
+		return false; //wrong memory address
+	
+	int startLocation=(address-minAddress)/sizeOfPage;
+	int endLocation=(address+length-1-minAddress)/sizeOfPage;
+	int listNumberBetween=endLocation-startLocation-1;
+	
+/***第一种情况（起始地址和末地址不在同一条链表上）***/
+
+	if(startLocation!=endLocation){
+	
+	int startNodeAddress=address-address%32;
+	int x=address%32;
+	int value=0;
+		for(int i=x;i<32;i++){
+		    value=value+(int)(pow(2.0,(double)i));
+		}
+	
+	
+	int y=(address+length-1)%32;
+	int _value=0;
+	    for(int i=0;i<=y;i++){
+		    _value=_value+(int)(pow(2.0,(double)i));
+		}
+    unsigned int endNodeAddress=(address+length-1)-y;
+    unsigned int endAddress=address+length-1;
+    
+		
+		
+	/*对起始地址所在链表进行的操作
+	*/
+	MemNode* node = memoryList[startLocation];
+    //The list is empty
+    if (node==NULL){
+        MemNode n;    
+		int _state=0|value;
+		n.address=startNodeAddress;
+		n.state=_state;	 
+		n.nextNode = NULL;                                                   
+		memoryList[startLocation]=&n;
+
+		}
+
+
+    MemNode* a=node; //Pre node of the current node
+	//Find the memory node in the address	
+	while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
+		a = node;
+		if((node->address)>address){
+			MemNode *temp=node;
+			MemNode *it=node->nextNode;
+			node=node->nextNode;
+			a->nextNode=it; 
+		    delete temp;
+			continue;
+		}
+        node=node->nextNode;
+		//node=a;
+	} 
+	//The memory node in the address is not existed
+	if( node==NULL ){      
+		 MemNode n;    
+		 int _state=0|value;
+		 n.address=startNodeAddress;
+		 n.state=_state;
+		 n.nextNode = NULL;
+		 a->nextNode=&n;
+		 
+    }
+	else{	
+		 node->state=(node->state)|value;
+	    }
+     
+	int nodeNumberLeft=((startLocation+1)*sizeOfPage-( startNodeAddress+32))/32;
+		 if(nodeNumberLeft!=0){
+		    
+			for(int i=1;i<=nodeNumberLeft;i++){
+			MemNode m;
+			int address_=startNodeAddress+32*i;
+			int state_=0xFFFFFFFF;
+			m.address=address_;
+			m.state=state_;
+			m.nextNode=NULL;
+			node->nextNode=&m;
+			node=node->nextNode;
+            }
+		
+		}
+
+		
+
+		 	
+	/*对起始地址所在链表和末地址所在链表之间的链表的操作
+	*/
+		 for(int i=0;i<listNumberBetween;i++){
+			 memoryList[startLocation+i+1]=NULL;
+			 MemNode* node2 = memoryList[startLocation+i+1];
+             
+			 MemNode n;    
+		     int _state=0xFFFFFFFF;
+		     n.address=(startLocation+i+1)*sizeOfPage;
+		     n.state=_state;	 
+		     n.nextNode = NULL;                                                   
+		     memoryList[startLocation+i+1]=&n;
+			
+			 for(int j=0;j<(sizeOfPage/32);j++){
+				 MemNode m;
+			     int address_=(startLocation+i+1)*sizeOfPage+32*j;
+			     int state_=0xFFFFFFFF;
+			     m.address=address_;
+			     m.state=state_;
+			     m.nextNode=NULL;
+			     node2->nextNode=&m;
+			     node2=node2->nextNode;
+			 }
+		 }
+         
+	
+
+		 	
+	/*对末地址所在链表进行的操作
+	*/
+		 
+	    MemNode* node3 = memoryList[endLocation];
+
+    //The list is empty
+    if (node3==NULL){
+        MemNode n;    
+		int _state=0|_value;
+		n.address=endNodeAddress;
+		n.state=_state;	 
+		n.nextNode = NULL;                                                   
+		memoryList[endLocation]=&n;
+
+		}
+
+
+    MemNode* b=node3; //Pre node of the current node
+	//Find the memory node in the address	
+	while( (node3!=NULL) && ((endAddress>(node3->address+31)) | (endAddress<(node3->address)))  ){ 	
+		b = node3;
+		if((node3->address+31)<endAddress){
+			MemNode *temp=node3;
+			MemNode *it=node3->nextNode;
+			node3=node3->nextNode;
+			b->nextNode=it; 
+		    delete temp;
+			continue;
+		}
+        node3=node3->nextNode;
+		//node3=a;
+	} 
+	//The memory node in the address is not existed
+	if( node3==NULL ){      
+		 MemNode n;    
+		 int _state=0|_value;
+		 n.address=endAddress;
+		 n.state=_state;
+		 n.nextNode = NULL;
+		 b->nextNode=&n;
+		 
+    }
+	else{	
+		 node3->state=(node3->state)|_value;
+	    }
+     
+	int nodeNumberLeft2=(endAddress-endLocation*sizeOfPage)/32;
+		 if(nodeNumberLeft2!=0){
+		    
+			for(int i=1;i<=nodeNumberLeft2;i++){
+			MemNode m;
+			int address_=endAddress-32*i;
+			int state_=0xFFFFFFFF;
+			m.address=address_;
+			m.state=state_;
+			m.nextNode=NULL;
+			node3->nextNode=&m;
+			node3=node3->nextNode;
+            }
+		
+		}
+
+
+
+     return true;
+
 }
 
+	
+
+
+
+/***第二种情况（起始地址和末地址在同一条链表上）***/
+     
+     else{
+		
+		/*如果起始地址和末地址在一个结点上进行的操作
+	    */
+		
+		if(address%32==(address+length-1)%32){
+			
+			 int startNodeAddress=address-address%32;
+	         int x=address%32;
+			 int y=(address+length-1)%32;
+	         int value=0;
+		for(int i=x;i<=y;i++){
+		    value=value+(int)(pow(2.0,(double)i));
+		}
+	
+	    MemNode* node = memoryList[startLocation];
+        //The list is empty
+     if (node==NULL){
+        MemNode n;    
+		int _state=0|value;
+		n.address=startNodeAddress;
+		n.state=_state;	 
+		n.nextNode = NULL;                                                   
+		memoryList[startLocation]=&n;
+
+		}
+
+      MemNode* a=node; //Pre node of the current node
+	//Find the memory node in the address	
+	while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
+		a = node;
+	    node=node->nextNode;
+		//node=a;
+	} 
+	//The memory node in the address is not existed
+	if( node==NULL ){      
+		 MemNode n;    
+		 int _state=0|value;
+		 n.address=startNodeAddress;
+		 n.state=_state;
+		 n.nextNode = NULL;
+		 a->nextNode=&n;
+    }
+	else{	
+		 node->state=(node->state)|value;
+	    }
+
+
+
+	 }
+		 
+	   
+		 
+		
+		/*如果起始地址和末地址不在同一个结点上(但在同一条链表上)进行的操作
+	    */
+		
+		else{
+			
+			 int startNodeAddress=address-address%32;
+	         int x=address%32;
+	         int value=0;
+		for(int i=x;i<32;i++){
+		    value=value+(int)(pow(2.0,(double)i));
+		}
+	
+	
+	        int y=(address+length-1)%32;
+	        int _value=0;
+	    for(int i=0;i<=y;i++){
+		    _value=_value+(int)(pow(2.0,(double)i));
+		}
+           unsigned int endNodeAddress=(address+length-1)-y;
+           unsigned int endAddress=address+length-1;
+    
+		
+		
+	MemNode* node = memoryList[startLocation];
+    //The list is empty
+    if (node==NULL){
+        MemNode n;    
+		int _state=0|value;
+		n.address=startNodeAddress;
+		n.state=_state;	 
+		n.nextNode = NULL;                                                   
+		memoryList[startLocation]=&n;
+
+		}
+
+
+    MemNode* a=node; //Pre node of the current node
+	//Find the memory node in the address	
+	while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
+		a = node;
+		if( ((node->address)>address)&& ((node->address)<endNodeAddress) ){
+			MemNode *temp=node;
+			MemNode *it=node->nextNode;
+			node=node->nextNode;
+			a->nextNode=it; 
+		    delete temp;
+			continue;
+		}
+        node=node->nextNode;
+		//node=a;
+	} 
+	//The memory node in the address is not existed
+	if( node==NULL ){      
+		 MemNode n;    
+		 int _state=0|value;
+		 n.address=startNodeAddress;
+		 n.state=_state;
+		 n.nextNode = NULL;
+		 a->nextNode=&n;
+
+     }
+	else{	
+		 node->state=(node->state)|value;
+	 }
+     
+	int nodeNumberBetween=(endNodeAddress-( startNodeAddress+32))/32;
+		 if(nodeNumberBetween!=0){
+		    
+			for(int i=1;i<=nodeNumberBetween;i++){
+			MemNode z;
+			int address_=startNodeAddress+32*i;
+			int state_=0xFFFFFFFF;
+			z.address=address_;
+			z.state=state_;
+			z.nextNode=NULL;
+			node->nextNode=&z;
+			node=node->nextNode;
+            }
+		
+		}
+
+        MemNode* node2=memoryList[startLocation];
+
+        MemNode* b=node2; //Pre node of the current node
+	    //Find the memory node in the address 
+        while( (node2!=NULL) && ((endAddress>(node2->address+31)) | (endAddress<(node2->address)))  ){ 	
+		 b=node2;
+		
+         node2=node2->nextNode;
+		//node2=b;
+	} 
+	//The memory node in the address is not existed
+	if( node2==NULL ){      
+		 MemNode n;    
+		 int _state=0|_value;
+		 n.address=endNodeAddress;
+		 n.state=_state;
+		 n.nextNode = NULL;
+		 b->nextNode=&n;
+
+     }
+	else{	
+		 node2->state=(node2->state)|_value;
+	 }
+
+
+     }
+    
+	 return true;
+}
+
+
+
+}
 /******************************************************************
  Title:dismarkTaintedBlock
  Function:Dismark the memroy in the address to be not tainted
@@ -243,7 +632,273 @@ bool MemoryRecorder::markTaintedBlock(unsigned int address, int length)
  Return value:true is successful, false means exception
 ******************************************************************/
 bool MemoryRecorder::dismarkTaintedBlock(unsigned int address, int length)
-{
+{   
+	
+	if(length==1){
+		dismarkTaintedMemory(address);
+	}
+	
+	if(address<minAddress||address>maxAddress)
+		return false; //wrong memory address
+	
+	int startLocation=(address-minAddress)/sizeOfPage;
+	int endLocation=(address+length-1-minAddress)/sizeOfPage;
+	int listNumberBetween=endLocation-startLocation-1;
+	
+/***第一种情况（起始地址和末地址不在同一条链表上）***/
+
+	if(startLocation!=endLocation){
+	
+	int startNodeAddress=address-address%32;
+	int x=address%32;
+	int value=0;
+		for(int i=x;i<32;i++){
+		    value=value+(int)(pow(2.0,(double)i));
+		}
+	value=value^0xFFFFFFFF;
+	
+	int y=(address+length-1)%32;
+	int _value=0;
+	    for(int i=0;i<=y;i++){
+		    _value=_value+(int)(pow(2.0,(double)i));
+		}
+    _value=_value^0xFFFFFFFF;
+
+    unsigned int endNodeAddress=(address+length-1)-y;
+    unsigned int endAddress=address+length-1;
+    
+		
+		
+	/*对起始地址所在链表进行的操作
+	*/
+	MemNode* node = memoryList[startLocation];
+    //The list is empty
+    if (node==NULL){
+        ;
+
+		}
+
+
+    MemNode* a=node; //Pre node of the current node
+	//Find the memory node in the address	
+	while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
+		a = node;
+		if((node->address)>address){
+			MemNode *temp=node;
+			MemNode *it=node->nextNode;
+			node=node->nextNode;
+			a->nextNode=it; 
+		    delete temp;
+			continue;
+		}
+        node=node->nextNode;
+		//node=a;
+	} 
+	//The memory node in the address is not existed
+	if( node==NULL ){      
+		 ;
+		 
+    }
+	else{	
+		 node->state=(node->state)|value;
+	    }
+  
+
+		
+
+		 	
+	/*对起始地址所在链表和末地址所在链表之间的链表的操作
+	*/
+		 for(int i=0;i<listNumberBetween;i++){
+			 memoryList[startLocation+i+1]=NULL;
+			
+		 }
+         
+	
+
+		 	
+	/*对末地址所在链表进行的操作
+	*/
+		 
+	    MemNode* node2 = memoryList[endLocation];
+
+    //The list is empty
+    if (node2==NULL){
+           ;
+
+		}
+
+
+    MemNode* b=node2; //Pre node of the current node
+	//Find the memory node in the address	
+	while( (node2!=NULL) && ((endAddress>(node2->address+31)) | (endAddress<(node2->address)))  ){ 	
+		b = node2;
+		if((node2->address+31)<endAddress){
+			MemNode *temp=node2;
+			MemNode *it=node2->nextNode;
+			node2=node2->nextNode;
+			b->nextNode=it; 
+		    delete temp;
+			continue;
+		}
+        node2=node2->nextNode;
+		//node2=a;
+	} 
+	//The memory node in the address is not existed
+	if( node2==NULL ){      
+		 ;
+		 
+    }
+	else{	
+		 node2->state=(node2->state)|_value;
+	    }
+     
+	
+
+
+    return true;
+
+}
+
+	
+
+
+
+/***第二种情况（起始地址和末地址在同一条链表上）***/
+     
+     else{
+		
+		/*如果起始地址和末地址在一个结点上进行的操作
+	    */
+		
+		if(address%32==(address+length-1)%32){
+			
+			 int startNodeAddress=address-address%32;
+	         int x=address%32;
+			 int y=(address+length-1)%32;
+	         int value=0;
+		for(int i=x;i<=y;i++){
+		    value=value+(int)(pow(2.0,(double)i));
+		}
+		    value=value^0xFFFFFFFF;
+	
+	    MemNode* node = memoryList[startLocation];
+        //The list is empty
+     if (node==NULL){
+           ;
+
+		}
+
+      MemNode* a=node; //Pre node of the current node
+	//Find the memory node in the address	
+	while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
+		a = node;
+	    node=node->nextNode;
+		//node=a;
+	} 
+	//The memory node in the address is not existed
+	if( node==NULL ){      
+		 ;
+    }
+	else{	
+		 node->state=(node->state)|value;
+	    }
+
+
+
+	 }
+		 
+	   
+		 
+		
+		/*如果起始地址和末地址不在同一个结点上(但在同一条链表上)进行的操作
+	    */
+		
+		else{
+			
+			 int startNodeAddress=address-address%32;
+	         int x=address%32;
+	         int value=0;
+		for(int i=x;i<32;i++){
+		    value=value+(int)(pow(2.0,(double)i));
+		}
+	        value=value^0xFFFFFFFF;
+	
+	        int y=(address+length-1)%32;
+	        int _value=0;
+	    for(int i=0;i<=y;i++){
+		    _value=_value+(int)(pow(2.0,(double)i));
+		}
+           _value=_value^0xFFFFFFFF;
+
+           unsigned int endNodeAddress=(address+length-1)-y;
+           unsigned int endAddress=address+length-1;
+    
+		
+		
+	MemNode* node = memoryList[startLocation];
+    //The list is empty
+    if (node==NULL){
+       ;
+
+		}
+
+
+    MemNode* a=node; //Pre node of the current node
+	//Find the memory node in the address	
+	while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
+		a = node;
+		if( ((node->address)>address)&& ((node->address)<endNodeAddress) ){
+			MemNode *temp=node;
+			MemNode *it=node->nextNode;
+			node=node->nextNode;
+			a->nextNode=it; 
+		    delete temp;
+			continue;
+		}
+        node=node->nextNode;
+		//node=a;
+	} 
+	//The memory node in the address is not existed
+	if( node==NULL ){      
+		 ;
+
+     }
+	else{	
+		 node->state=(node->state)|value;
+	 }
+     
+	
+
+        MemNode* node2=memoryList[startLocation];
+
+        MemNode* b=node2; //Pre node of the current node
+	    //Find the memory node in the address 
+        while( (node2!=NULL) && ((endAddress>(node2->address+31)) | (endAddress<(node2->address)))  ){ 	
+		 b=node2;
+		
+         node2=node2->nextNode;
+		//node2=b;
+	} 
+	//The memory node in the address is not existed
+	if( node2==NULL ){      
+		 ;
+
+     }
+	else{	
+		 node2->state=(node2->state)|_value;
+	 }
+
+
+     }
+    
+	 return true;
+}
+
+
+
+
+
 }
 
 /******************************************************************
@@ -257,8 +912,16 @@ bool MemoryRecorder::dismarkTaintedBlock(unsigned int address, int length)
  bool
  Return value:true is successful, false means such exception
 ******************************************************************/
-bool MemoryRecorder::dismarkTaintedBlock(unsigned int address, int length)
-{
+bool MemoryRecorder::dismarkTaintedBlock(unsigned int address, int length,int state)
+{   
+	
+    if(state==1)
+		return markTaintedBlock(address,length);
+	else if(state==0)
+		return dismarkTaintedBlock(address,length);
+	else
+		return false;
+
 }
 
 /******************************************************************
