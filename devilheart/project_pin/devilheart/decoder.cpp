@@ -47,6 +47,8 @@ OperandKind getOperandKind(INS ins)
 		return NONE;
 	int operandInd = 0;
 	for(int i=0;i<operandCount;i++){
+		if(operandInd>1)
+			break;
 		if(INS_OperandIsAddressGenerator(ins,i)){
 			operands[operandInd] = 3;
 			operandInd++;
