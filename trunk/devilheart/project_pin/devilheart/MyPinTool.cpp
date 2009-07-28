@@ -91,9 +91,9 @@ VOID instruction(INS ins, VOID *v)
 	//		IARG_REG_VALUE,REG_CX,
 	//		IARG_END);
  //   }
-	fprintf(trace,insName.c_str());
-	fprintf(trace,"\n");
-	decode(ins);
+	//fprintf(trace,insName.c_str());
+	//fprintf(trace,"\n");
+	//decode(ins);
 }
 
 
@@ -127,6 +127,15 @@ int main(int argc, char * argv[])
 {
     trace = fopen("itrace.out", "w");
     
+	/* Test mem_recorder*/
+	initTest();
+	testMarkTaintedMemory();
+	testDismarkTaintedMemory();
+	testIsTainted();
+	testDismarkTaintedBlock();
+	testMarkTaintedBlock();
+	closeTest();
+
     /* Initialize pin */
     PIN_Init(argc, argv);
 
