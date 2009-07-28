@@ -15,6 +15,7 @@
 #include <string.h>
 #include "pin.H"
 #include "decoder.h"
+#include "test_recorder.h"
 
 
 /*File to save data for this application*/
