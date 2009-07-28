@@ -64,7 +64,7 @@ void testMarkTaintedMemory()
 			failNum ++;
 			fprintf(trace,"mark address:0x%x  result:fail\n",taintedAddress[i]);
 		}else{
-			fprintf(trace,"mark address:0x%x  result:success\n",taintedAddress[i]);
+			//fprintf(trace,"mark address:0x%x  result:success\n",taintedAddress[i]);
 		}
 	}
 	fprintf(trace,"testMarkTaintedMemory test all:%d fail:%d\n",dataNum,failNum);
@@ -106,7 +106,7 @@ void testDismarkTaintedMemory()
 			failNum ++;
 			fprintf(trace,"dismark address:0x%x  result:fail\n",untaintedAddress[i]);
 		}else{
-			fprintf(trace,"dismark address:0x%x  result:success\n",untaintedAddress[i]);
+			//fprintf(trace,"dismark address:0x%x  result:success\n",untaintedAddress[i]);
 		}
 	}
 	fprintf(trace,"testDisMarkTaintedMemory test all:%d fail:%d\n",dataNum,failNum);
@@ -156,7 +156,7 @@ void testIsTainted()
 			failNum ++;
 			fprintf(trace,"test state of address:0x%x  result:fail\n",testAddress[i]);
 		}else{
-			fprintf(trace,"test state of address:0x%x  result:success\n",testAddress[i]);
+			//fprintf(trace,"test state of address:0x%x  result:success\n",testAddress[i]);
 		}
 	}
 	fprintf(trace,"testIsMarkTainted test all:%d fail:%d\n",dataNum,failNum);
@@ -200,7 +200,7 @@ void testDismarkTaintedBlock()
 			failNum ++;
 			fprintf(trace,"test state of address:0x%x  result:fail\n",testAddress[i]);
 		}else{
-			fprintf(trace,"test state of address:0x%x  result:success\n",testAddress[i]);
+			//fprintf(trace,"test state of address:0x%x  result:success\n",testAddress[i]);
 		}
 	}
 	fprintf(trace,"testDismarkTaintedBlock test all:%d fail:%d\n",dataNum,failNum);
@@ -244,7 +244,7 @@ void testMarkTaintedBlock()
 			failNum ++;
 			fprintf(trace,"test state of address:0x%x  result:fail\n",testAddress[i]);
 		}else{
-			fprintf(trace,"test state of address:0x%x  result:success\n",testAddress[i]);
+			//fprintf(trace,"test state of address:0x%x  result:success\n",testAddress[i]);
 		}
 	}
 	fprintf(trace,"testMarkTaintedBlock test all:%d fail:%d\n",dataNum,failNum);
