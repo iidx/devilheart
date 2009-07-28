@@ -429,6 +429,10 @@
 				RelativePath=".\MyPinTool.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\test_recorder.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -445,6 +449,10 @@
 			</File>
 			<File
 				RelativePath=".\mem_recorder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\test_recorder.h"
 				>
 			</File>
 		</Filter>
