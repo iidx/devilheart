@@ -28,6 +28,9 @@ void testIsTainted();
 /* test function dismarkTaintedBlock*/
 void testDismarkTaintedBlock();
 
+/* test function markTaintedBlock*/
+void testMarkTaintedBlock();
+
 /* init test function*/
 void initTest();
 
