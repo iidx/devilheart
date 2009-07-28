@@ -15,11 +15,15 @@
 #include <string.h>
 #include "pin.H"
 #include "decoder.h"
+#include "mem_recorder.h"
 #include "test_recorder.h"
 
 
-/*File to save data for this application*/
+/* File to save data for this application*/
 FILE * trace;
+
+/* Data strctutor to record the state of memory*/
+MemoryRecorder *memManager;
 
 /******************************************************************
  Title:printRegisters
@@ -49,7 +53,7 @@ VOID decode(INS ins)
 	UINT insExt = INS_Extension(ins);
 	unsigned int realOpcode = opcode&0xffff;
 	unsigned int insKind = INSNUM(realOpcode,1);
-	for(int i = 0;i<operandCount;i++){
+	/*for(int i = 0;i<operandCount;i++){
 		if(INS_OperandIsAddressGenerator(ins,i))
 			fprintf(trace,"operand%d is address generator\n",i);
 		else if(::INS_OperandIsMemory(ins,i))
@@ -61,9 +65,10 @@ VOID decode(INS ins)
 		else if(INS_OperandIsBranchDisplacement(ins,i))
 			fprintf(trace,"operand%d is branch displacement\n",i);
 		else fprintf(trace,"operand%d is other type\n",i);
-	}
+	}*/
 	fprintf(trace,"Opcode:%d | operand count:%d\n",realOpcode,operandCount);
-	
+	OperandKind kind = getOperandKind(ins);
+	fprintf(trace,"insNum:%d\n",INSNUM(opcode,kind));
 }
 
 /******************************************************************
@@ -91,9 +96,9 @@ VOID instruction(INS ins, VOID *v)
 	//		IARG_REG_VALUE,REG_CX,
 	//		IARG_END);
  //   }
-	//fprintf(trace,insName.c_str());
-	//fprintf(trace,"\n");
-	//decode(ins);
+	fprintf(trace,insName.c_str());
+	fprintf(trace,"\n");
+	decode(ins);
 }
 
 
@@ -128,13 +133,13 @@ int main(int argc, char * argv[])
     trace = fopen("itrace.out", "w");
     
 	/* Test mem_recorder*/
-	initTest();
+	/*initTest();
 	testMarkTaintedMemory();
 	testDismarkTaintedMemory();
 	testIsTainted();
 	testDismarkTaintedBlock();
 	testMarkTaintedBlock();
-	closeTest();
+	closeTest();*/
 
     /* Initialize pin */
     PIN_Init(argc, argv);
