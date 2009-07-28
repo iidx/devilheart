@@ -42,7 +42,7 @@ int (*handlerFun[])(INS ins,int srcA,int srcB,int srcC,
 					movMRHandler,
 					movRRHandler,
 					callMHandler,
-					returnMHandler,
+					returnIHandler,
 					leaMRHandler
 };
 
@@ -273,14 +273,14 @@ void initHandlerFuns()
 	handlerFun[5] = movMRHandler;
 	handlerFun[6] = movRRHandler;
 	handlerFun[7] = callMHandler;
-	handlerFun[8] = returnMHandler;
+	handlerFun[8] = returnIHandler;
 	handlerFun[9] = leaMRHandler;
 }
 
 
 /******************************************************************
  Title:initHandlerTable
- Function:To init handler table
+ Function:To init handler: table handlerTable[insNum]=handlerNum
  Input:
  void
  Output:
