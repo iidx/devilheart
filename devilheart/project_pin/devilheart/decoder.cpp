@@ -66,7 +66,7 @@ OperandKind getOperandKind(INS ins)
 			operandInd++;
 		}
 		else if(INS_OperandIsBranchDisplacement(ins,i)){
-			operands[operandInd] = 2;
+			operands[operandInd] = 3;
 			operandInd++;
 		}
 		else continue;
