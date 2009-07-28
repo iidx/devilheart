@@ -426,10 +426,19 @@ void initHandlerTable()
 ******************************************************************/
 void handlerInsProxy(unsigned int insNum,INS ins)
 {
-	int handlerNum = handlerTable[insNum];
-	int (*handler)(INS,int,int,int,int,int,int);
-	handler = handlerFun[handlerNum];
-	int result = handler(ins,srcA,srcB,srcC,dstA,dstB,dstC);
+	HandlerTable::iterator i;
+	i = handlerTable.find(insNum);
+	if(i == handlerTable.end()){
+		int (*handler)(INS,int,int,int,int,int,int);
+		handler = handlerFun[0];
+		int result = handler(ins,srcA,srcB,srcC,dstA,dstB,dstC);
+	}else{
+		int handlerNum = handlerTable[insNum];
+		int (*handler)(INS,int,int,int,int,int,int);
+		handler = handlerFun[handlerNum];
+		int result = handler(ins,srcA,srcB,srcC,dstA,dstB,dstC);
+	}
+	
 }
 
 
