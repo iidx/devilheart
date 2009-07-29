@@ -4,13 +4,14 @@
  Function:To implement handler functions
  Description:
  Source file to implement handler functions
- Version: 1.0
+ Version: 1.4
  Date and author: 2009.07.26 hsqfire
 *******************************************************************/
 
 #include <fstream>
 #include <stdlib.h>
 #include <iomanip>
+#include <string.h>
 #include "ins_handler.h"
 
 /* Define src and dst operand*/
@@ -34,28 +35,41 @@ int callMHandler(INS,int,int,int,int,int,int);
 int returnIHandler(INS,int,int,int,int,int,int);
 int leaMRHandler(INS,int,int,int,int,int,int);
 int leaRMHandler(INS,int,int,int,int,int,int);
+int movRIHandler(INS,int,int,int,int,int,int);
+int movMIHandler(INS,int,int,int,int,int,int);
+int repMovsbHandler(INS,int,int,int,int,int,int);
 
 /* define handler table*/
 int (*handlerFun[])(INS ins,int srcA,int srcB,int srcC,
 				int dstA,int dstB,int dstC)={
-					defaultHandler,
-					popRHandler,
-					pushRHandler,
-					movIRHandler,
-					movRMHandler,
-					movMRHandler,
-					movRRHandler,
-					callMHandler,
-					returnIHandler,
-					leaMRHandler,
-					leaRMHandler
+		defaultHandler,	//#0
+		popRHandler,	//#1
+		pushRHandler,
+		movIRHandler,
+		movRMHandler,
+		movMRHandler,	//#5
+		movRRHandler,
+		callMHandler,
+		returnIHandler,
+		leaMRHandler,
+		leaRMHandler,	//#10
+		movRIHandler,
+		movMIHandler
+		repMovsbHandler
 };
 
 /* handle result output file*/
 FILE *output;
 
+/* handle log file*/
+FILE *log;
+
 /* temporate variable*/
 int regValue;
+
+/* accumulator*/
+int countHandledIns;
+int countAllIns;
 
 /* define data structor to record the state of registers*/
 #define REGNUM 30
@@ -91,6 +105,9 @@ VOID getRegisterValue(int value)
 ******************************************************************/
 int defaultHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
+	string disIns = INS_Disassemble(ins);
+	fprintf(log,"Unhandler ins:%s\n",disIns.c_str());
+	countAllIns++;
 	return 0;
 }
 
@@ -111,6 +128,8 @@ int defaultHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC
 ******************************************************************/
 int popRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
+	countAllIns++;
+	countHandledIns++:
 	return 0;
 }
 
@@ -132,6 +151,8 @@ int popRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 ******************************************************************/
 int pushRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
+	countAllIns++;
+	countHandledIns++;
 	return 0;
 }
 
@@ -153,6 +174,8 @@ int pushRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 ******************************************************************/
 int movIRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
+	countAllIns++;
+	countHandledIns++;
 	return 0;
 }
 
@@ -186,7 +209,7 @@ int movRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 			IARG_REG_VALUE,indexReg,
 			IARG_END);
 	int valueIndexReg = regValue;
-	unsigned int realAddress = displacement+valueBaseReg+valueIndexReg;
+	unsigned int realAddress = displacement+valueBaseReg+valueIndexReg*scale;
 	int state = memManager->isTainted(realAddress);
 	if(state==1){
 		REG dstReg = INS_OperandReg(ins,0);
@@ -195,6 +218,8 @@ int movRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 		REG dstReg = INS_OperandReg(ins,0);
 		regState[dstReg] = 1;
 	}
+	countAllIns++;
+	countHandledIns++;
 	return 0;
 }
 
@@ -228,7 +253,7 @@ int movMRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 			IARG_REG_VALUE,indexReg,
 			IARG_END);
 	int valueIndexReg = regValue;
-	unsigned int realAddress = displacement+valueBaseReg+valueIndexReg;
+	unsigned int realAddress = displacement+valueBaseReg+valueIndexReg*scale;
 	REG srcReg = INS_OperandReg(ins,1);
 	int state = regState[srcReg];
 	if(state==1){
@@ -236,6 +261,8 @@ int movMRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 	}else{
 		memManager->dismarkTaintedMemory(realAddress);
 	}
+	countAllIns++;
+	countHandledIns++;
 	return 0;
 }
 
@@ -265,6 +292,8 @@ int movRRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 	}else{
 		regState[dstReg]=0;
 	}
+	countAllIns++;
+	countHandledIns++;
 	return 0;
 }
 
@@ -286,6 +315,8 @@ int movRRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 ******************************************************************/
 int callMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
+	countAllIns++;
+	countHandledIns++;
 	return 0;
 }
 
@@ -307,6 +338,8 @@ int callMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 ******************************************************************/
 int returnIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
+	countAllIns++;
+	countHandledIns++;
 	return 0;
 }
 
@@ -328,6 +361,8 @@ int returnIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC
 ******************************************************************/
 int leaMRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
+	countAllIns++;
+	countHandledIns++;
 	return 0;
 }
 
@@ -360,7 +395,7 @@ int leaRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 			IARG_REG_VALUE,indexReg,
 			IARG_END);
 	int valueIndexReg = regValue;
-	unsigned int realAddress = displacement+valueBaseReg+valueIndexReg;
+	unsigned int realAddress = displacement+valueBaseReg+valueIndexReg*scale;
 	int state = memManager->isTainted(realAddress);
 	if(state==1){
 		REG dstReg = INS_OperandReg(ins,0);
@@ -369,6 +404,117 @@ int leaRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 		REG dstReg = INS_OperandReg(ins,0);
 		regState[dstReg] = 1;
 	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:movRIHandler
+ Function:Handler to handle instruction "mov REG,immd"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int movRIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:movMIHandler
+ Function:Handler to handle instruction "mov [mem addr] immd"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int movMIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:repMovsbHandler
+ Function:Handler to handle instruction "rep movsb"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int repMovsbHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	REG dstBaseReg = INS_OperandMemoryBaseReg(ins,0);
+	INT64 dstDisplacement = INS_OperandMemoryDisplacement(ins,0);
+	REG dstIndexReg = INS_OperandMemoryIndexReg(ins,0);
+	UINT32 dstScale = INS_OperandMemoryScale(ins,0);
+	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
+			IARG_REG_VALUE,dstBaseReg,
+			IARG_END);
+	int valueDstBaseReg = regValue;
+	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
+			IARG_REG_VALUE,dstIndexReg,
+			IARG_END);
+	int valueDstIndexReg = regValue;
+	unsigned int realDstAddress = dstDisplacement+valueDstBaseReg+valueDstIndexReg*dstScale;
+
+	REG srcBaseReg = INS_OperandMemoryBaseReg(ins,2);
+	INT64 srcDisplacement = INS_OperandMemoryDisplacement(ins,2);
+	REG srcIndexReg = INS_OperandMemoryIndexReg(ins,2);
+	UINT32 srcScale = INS_OperandMemoryScale(ins,2);
+	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
+			IARG_REG_VALUE,srcBaseReg,
+			IARG_END);
+	int valueSrcBaseReg = regValue;
+	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
+			IARG_REG_VALUE,srcIndexReg,
+			IARG_END);
+	int valueSrcIndexReg = regValue;
+	unsigned int realSrcAddress = srcDisplacement+valueSrcBaseReg+valueSrcIndexReg*dstScale;
+
+	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
+			IARG_REG_VALUE,REG_ECX,
+			IARG_END);
+	int valueRep = regValue;
+	
+	for(int i=0;i<valueRep;i++)
+	{
+		if(memManager->isTainted(realSrcAddress+i)){
+			memManager->markTaintedMemory(realDstAddress+i);
+		}
+	}
+
+	countAllIns++;
+	countHandledIns++;
 	return 0;
 }
 
@@ -382,17 +528,19 @@ int leaRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 ******************************************************************/
 void initHandlerFuns()
 {
-	handlerFun[0] = defaultHandler;	//#0
-	handlerFun[1] = popRHandler;
-	handlerFun[2] = pushRHandler;
-	handlerFun[3] = movIRHandler;
-	handlerFun[4] = movRMHandler;
-	handlerFun[5] = movMRHandler;	//#5
-	handlerFun[6] = movRRHandler;
-	handlerFun[7] = callMHandler;
-	handlerFun[8] = returnIHandler;
-	handlerFun[9] = leaMRHandler;
-	handlerFun[10] = leaRMHandler;	//#10
+	//handlerFun[0] =	0	//defaultHandler	#0
+	//handlerFun[1] =	1	//popRHandler
+	//handlerFun[2] =	2	//pushRHandler
+	//handlerFun[3] =	3	//movIRHandler
+	//handlerFun[4] =	4	//movRMHandler
+	//handlerFun[5] =	5	//movMRHandler	#5
+	//handlerFun[6] =	6	//movRRHandler
+	//handlerFun[7] =	7	//callMHandler
+	//handlerFun[8] =	8	//returnIHandler
+	//handlerFun[9] =	9	//leaMRHandler
+	//handlerFun[10] =10	//leaRMHandler	#10
+	//handlerFun[11] =11	//movRIHandler
+	//handlerFun[12] =12	//movMIHandler
 }
 
 
@@ -405,14 +553,17 @@ void initHandlerFuns()
 ******************************************************************/
 void initHandlerTable()
 {
-	handlerTable[76547]=5;	//mov [mem addr] REG
-	handlerTable[76546]=6;	//mov REG REG
-	handlerTable[134914]=2;	//push REG
-	handlerTable[68354]=10;	//lea REG [mem addr]
-	handlerTable[9731]=7;	//call addr
-	handlerTable[121602]=1;	//pop REG
-	handlerTable[76546]=4;	//mov REG [mem addr]
-	handlerTable[138753]=8;	//ret immd
+	handlerTable[76579]=5;	//mov [mem addr] REG
+	handlerTable[76578]=6;	//mov REG REG
+	handlerTable[134706]=2;	//push REG
+	handlerTable[68146]=10;	//lea REG [mem addr]
+	handlerTable[9763]=7;	//call addr
+	handlerTable[121394]=1;	//pop REG
+	handlerTable[76594]=4;	//mov REG [mem addr]
+	handlerTable[138785]=8;	//ret immd
+	handlerTable[76562]=11;	//mov REG immd
+	handlerTable[76563]=12;	//mov [mem addr] immd
+	handlerTable[83507]=13;	//rep movsb
 }
 
 
@@ -455,6 +606,9 @@ void begin()
 		regState[i]=0;
 	}
 	output = fopen("TaintResult.out", "w");
+	log = fopen("TaintLog.out","w");
+	countHandledIns = 0;
+	countAllIns = 0;
 }
 
 
@@ -467,6 +621,16 @@ void begin()
 ******************************************************************/
 void end()
 {
+	/* print out the state of memory*/
+	memManager->printState(output);
+	fprintf(output,"#eof");
+
+	/* print out the log			*/
+	fprintf(log,"*****************************************************");
+	fprintf(log,"Count of instruction:%d\n",countAllIns);
+	fprintf(log,"Handle %d instruction successfully!\n",countHandledIns);
+	fprintf(log,"#eof");
 	fclose(output);
+	fclose(log);
 }
 

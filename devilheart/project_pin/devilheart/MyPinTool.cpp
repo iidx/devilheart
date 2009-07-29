@@ -71,6 +71,10 @@ VOID decode(INS ins)
 	fprintf(trace,"insNum:%d\n",INSNUM(opcode,kind));
 }
 
+void manulMarkTaint()
+{
+}
+
 /******************************************************************
  Title:instruction
  Function:Pin calls this function every time a new instruction is 
@@ -96,9 +100,16 @@ VOID instruction(INS ins, VOID *v)
 	//		IARG_REG_VALUE,REG_CX,
 	//		IARG_END);
  //   }
-	fprintf(trace,insName.c_str());
+	/*fprintf(trace,insName.c_str());
 	fprintf(trace,"\n");
-	decode(ins);
+	decode(ins);*/
+	manulMarkTainted();
+	OPCODE opcode  = INS_Opcode(ins);
+	UINT32 operandCount = INS_OperandCount(ins);
+	UINT insExt = INS_Extension(ins);
+	unsigned int realOpcode = opcode&0xffff;
+	unsigned int insKind = INSNUM(realOpcode,1);
+	handleIns(insKind,ins);
 }
 
 
