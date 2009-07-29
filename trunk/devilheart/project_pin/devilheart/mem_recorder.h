@@ -5,7 +5,7 @@
  Description:
  Define some data structors to record the state of memory in size of
  4G at most.
- Version: 1.1
+ Version: 1.2
  Date and author: 2009.07.16 hsqfire
 *******************************************************************/
 
@@ -13,6 +13,8 @@
 #define _MEM_RECORDER_H
 
 #include <stdlib.h>
+#include <fstream>
+#include <iomanip>
 
 /* default size of one page in memory*/
 #define DEFAULT_PAGE_SIZE 1024
@@ -87,6 +89,9 @@ public:
 
 	/* Mark a block of continuous memory with the state*/
 	bool dismarkTaintedBlock(unsigned int address, int length,int state);
+
+	/* Print the state of memory to the output file*/
+	void printState(FILE *output);
 };
 
 #endif

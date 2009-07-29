@@ -46,15 +46,15 @@ void closeTest()
 ******************************************************************/
 void testMarkTaintedMemory()
 {
-	int dataNum = 0;
+	int dataNum = 3;
 	int failNum = 0;
 
 	unsigned int taintedAddress[]={
-		0x0000
+		0x0000000A,0x000B0000,0xC0000000
 	};
 	
 	bool testResult[]={
-		true
+		true,true,true
 	};
 
 	MemoryRecorder recorder;
@@ -68,7 +68,7 @@ void testMarkTaintedMemory()
 		}
 	}
 	fprintf(traceT,"testMarkTaintedMemory test all:%d fail:%d\n",dataNum,failNum);
-	fprintf(traceT,"*******************************************************************");
+	fprintf(traceT,"*******************************************************************\n");
 }
 
 
@@ -80,20 +80,20 @@ void testMarkTaintedMemory()
 ******************************************************************/
 void testDismarkTaintedMemory()
 {
-	int preDataNum = 0;
-	int dataNum = 0;
+	int preDataNum = 3;
+	int dataNum = 3;
 	int failNum = 0;
 
 	unsigned int taintedAddress[]={
-		0x0000
+		0xA00000,0x0000B000,0x0000000C
 	};
 	
 	unsigned int untaintedAddress[]={
-		0x0000
+		0x0000000D,0x000E000,0xF0000000
 	};
 
 	bool testResult[]={
-		true
+		true,true,true
 	};
 
 	MemoryRecorder recorder;
@@ -110,7 +110,7 @@ void testDismarkTaintedMemory()
 		}
 	}
 	fprintf(traceT,"testDisMarkTaintedMemory test all:%d fail:%d\n",dataNum,failNum);
-	fprintf(traceT,"*******************************************************************");
+	fprintf(traceT,"*******************************************************************\n");
 }
 
 
@@ -122,25 +122,25 @@ void testDismarkTaintedMemory()
 ******************************************************************/
 void testIsTainted()
 {
-	int preDataNum1 = 0;
-	int preDataNum2 = 0;
-	int dataNum = 0;
+	int preDataNum1 = 3;
+	int preDataNum2 = 3;
+	int dataNum = 3;
 	int failNum = 0;
 
 	unsigned int taintedAddress[]={
-		0x0000
+		0x0000ABCD,0xABCD0000,0xDCBA0000
 	};
 	
 	unsigned int untaintedAddress[]={
-		0x0000
+		0xA0B0C0D0,0x0B0A0C0D,0xD0C0B0A0
 	};
 
 	unsigned int testAddress[]={
-		0x0000
+		0x0000ABCD,0x0B0A0C0D,0xD0C0B0A0
 	};
 
 	int testResult[]={
-		1
+		1,0,0
 	};
 
 	MemoryRecorder recorder;
@@ -148,7 +148,7 @@ void testIsTainted()
 		recorder.markTaintedMemory(taintedAddress[i]);
 	}
 	for(int i=0;i<preDataNum2;i++){
-		recorder.markTaintedMemory(untaintedAddress[i]);
+		recorder.dismarkTaintedMemory(untaintedAddress[i]);
 	}
 	for(int i=0;i<dataNum;i++){
 		int result = recorder.isTainted(testAddress[i]);
@@ -160,7 +160,7 @@ void testIsTainted()
 		}
 	}
 	fprintf(traceT,"testIsMarkTainted test all:%d fail:%d\n",dataNum,failNum);
-	fprintf(traceT,"*******************************************************************");
+	fprintf(traceT,"*******************************************************************\n");
 }
 
 
@@ -172,21 +172,21 @@ void testIsTainted()
 ******************************************************************/
 void testDismarkTaintedBlock()
 {
-	int dataNum = 0;
+	int dataNum = 3;
 	int failNum = 0;
-	int preDataNum = 0;
+	int preDataNum = 3;
 
-	int minAddress= 0x0000;
-	int length = 0;
+	int minAddress= 0x00000000;
+	int length = 0x00001234;
 	unsigned int taintedAddress[]={
-		0x0000
+		0x00000001,0x00001222,0x00001235
 	};
 	unsigned int testAddress[]={
-		0x0000
+		0x00000001,0x00001222,0x00001235
 	};
 
 	int testResult[]={
-		1
+		0,0,1
 	};
 
 	MemoryRecorder recorder;
@@ -204,7 +204,7 @@ void testDismarkTaintedBlock()
 		}
 	}
 	fprintf(traceT,"testDismarkTaintedBlock test all:%d fail:%d\n",dataNum,failNum);
-	fprintf(traceT,"*******************************************************************");
+	fprintf(traceT,"*******************************************************************\n");
 }
 
 
@@ -216,21 +216,21 @@ void testDismarkTaintedBlock()
 ******************************************************************/
 void testMarkTaintedBlock()
 {
-	int dataNum = 0;
+	int dataNum = 3;
 	int failNum = 0;
-	int preDataNum = 0;
+	int preDataNum = 3;
 
 	int minAddress= 0x0000;
-	int length = 0;
+	int length = 0x00001234;
 	unsigned int taintedAddress[]={
-		0x0000
+		0x00000001,0x00001222,0x00001235
 	};
 	unsigned int testAddress[]={
-		0x0000
+		0x00000001,0x00001222,0x00001235
 	};
 
 	int testResult[]={
-		1
+		1,1,1
 	};
 
 	MemoryRecorder recorder;
@@ -248,5 +248,5 @@ void testMarkTaintedBlock()
 		}
 	}
 	fprintf(traceT,"testMarkTaintedBlock test all:%d fail:%d\n",dataNum,failNum);
-	fprintf(traceT,"*******************************************************************");
+	fprintf(traceT,"*******************************************************************\n");
 }

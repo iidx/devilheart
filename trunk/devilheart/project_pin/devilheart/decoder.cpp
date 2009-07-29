@@ -73,5 +73,5 @@ OperandKind getOperandKind(INS ins)
 	}
 	unsigned int firstOp = operands[0]&0xF;
 	unsigned int secondOp = operands[1]&0xF;
-	return (OperandKind)((secondOp<<8)|firstOp);
+	return (OperandKind)((secondOp<<4)|firstOp);
 }
