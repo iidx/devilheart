@@ -4,7 +4,7 @@
  Function:To implement functions of class MemoryRecorder
  Description:
  Source file to implement functions of class MemoryRecorder
- Version: 1.2
+ Version: 1.0
  Date and author: 2009.07.16 hsqfire, Jiang Bo
 *******************************************************************/
 
@@ -125,8 +125,7 @@ unsigned int MemoryRecorder::isTainted(unsigned int address)
 	if (node==NULL){
 		return 0; //The node does not exist
 	}
-	while( ((address>(node->address+31)) || (address<(node->address)))&&
-		node!=NULL)
+	while( node!=NULL && ((address>(node->address+31)) || (address<(node->address))))
 		node=node->nextNode;
 	if (node==NULL)
 		return 0; //The node containing this address does not exist
@@ -737,99 +736,102 @@ bool MemoryRecorder::dismarkTaintedBlock(unsigned int address, int length)
 	         int x=address%32;
 			 int y=(address+length-1)%32;
 	         int value=0;
-			for(int i=x;i<=y;i++){
-				value=value+(int)(pow(2.0,(double)i));
-			}
-			value=value^0xFFFFFFFF;
-			MemNode* node = memoryList[startLocation];
-			//The list is empty
-			if (node==NULL){
-			   ;
-			}
-			MemNode* a=node; //Pre node of the current node
-			//Find the memory node in the address	
-			while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
-				a = node;
+		for(int i=x;i<=y;i++){
+		    value=value+(int)(pow(2.0,(double)i));
+		}
+		value=value^0xFFFFFFFF;
+	    MemNode* node = memoryList[startLocation];
+        //The list is empty
+		if (node==NULL){
+           ;
+		}
+		MemNode* a=node; //Pre node of the current node
+		//Find the memory node in the address	
+		while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
+			a = node;
+			node=node->nextNode;
+			//node=a;
+		} 
+		//The memory node in the address is not existed
+		if( node==NULL ){      
+			 ;
+		}
+		else{	
+			 node->state=(node->state)|value;
+		}
+
+	 }
+	/*如果起始地址和末地址不在同一个结点上(但在同一条链表上)进行的操作
+    */
+	else{
+		int startNodeAddress=address-address%32;
+		int x=address%32;
+		int value=0;
+		for(int i=x;i<32;i++){
+			value=value+(int)(pow(2.0,(double)i));
+		}
+        value=value^0xFFFFFFFF;
+
+        int y=(address+length-1)%32;
+        int _value=0;
+		for(int i=0;i<=y;i++){
+			_value=_value+(int)(pow(2.0,(double)i));
+		}
+        _value=_value^0xFFFFFFFF;
+
+        unsigned int endNodeAddress=(address+length-1)-y;
+        unsigned int endAddress=address+length-1;
+
+		MemNode* node = memoryList[startLocation];
+		//The list is empty
+		if (node==NULL){
+		   ;
+
+		}
+
+		MemNode* a=node; //Pre node of the current node
+		//Find the memory node in the address	
+		while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
+			a = node;
+			if( ((node->address)>address)&& ((node->address)<endNodeAddress) ){
+				MemNode *temp=node;
+				MemNode *it=node->nextNode;
 				node=node->nextNode;
-				//node=a;
+				a->nextNode=it; 
+				delete temp;
+				continue;
+			}
+			node=node->nextNode;
+			//node=a;
 			} 
-			//The memory node in the address is not existed
-			if( node==NULL ){      
-				 ;
-			}
-			else{	
-				 node->state=(node->state)|value;
-			}
+		//The memory node in the address is not existed
+		if( node==NULL ){      
+			 ;
 
 		 }
-		/*如果起始地址和末地址不在同一个结点上(但在同一条链表上)进行的操作
-		*/
-		else{
-			int startNodeAddress=address-address%32;
-			int x=address%32;
-			int value=0;
-			for(int i=x;i<32;i++){
-				value=value+(int)(pow(2.0,(double)i));
-			}
-			value=value^0xFFFFFFFF;
+		else{	
+			 node->state=(node->state)|value;
+		}
+     
+        MemNode* node2=memoryList[startLocation];
 
-			int y=(address+length-1)%32;
-			int _value=0;
-			for(int i=0;i<=y;i++){
-				_value=_value+(int)(pow(2.0,(double)i));
-			}
-			_value=_value^0xFFFFFFFF;
+        MemNode* b=node2; //Pre node of the current node
+	    //Find the memory node in the address 
+        while( (node2!=NULL) && ((endAddress>(node2->address+31)) | (endAddress<(node2->address)))  ){ 	
+			b=node2;
+		
+			node2=node2->nextNode;
+			//node2=b;
+		} 
+		//The memory node in the address is not existed
+		if( node2==NULL ){      
+			 ;
 
-			unsigned int endNodeAddress=(address+length-1)-y;
-			unsigned int endAddress=address+length-1;
+		}
+		else{	
+			 node2->state=(node2->state)|_value;
+		}
 
-			MemNode* node = memoryList[startLocation];
-			//The list is empty
-			if (node==NULL){
-			   ;
-			}
-
-			MemNode* a=node; //Pre node of the current node
-			//Find the memory node in the address	
-			while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
-				a = node;
-				if( ((node->address)>address)&& ((node->address)<endNodeAddress) ){
-					MemNode *temp=node;
-					MemNode *it=node->nextNode;
-					node=node->nextNode;
-					a->nextNode=it; 
-					delete temp;
-					continue;
-				}
-				node=node->nextNode;
-				//node=a;
-			} 
-			//The memory node in the address is not existed
-			if( node==NULL ){      
-				 ;
-
-			}
-			else{	
-				 node->state=(node->state)|value;
-			}
-	     
-			MemNode* node2=memoryList[startLocation];
-
-			MemNode* b=node2; //Pre node of the current node
-			//Find the memory node in the address 
-			while( (node2!=NULL) && ((endAddress>(node2->address+31)) | (endAddress<(node2->address)))  ){ 	
-				b=node2;
-			
-				node2=node2->nextNode;
-				//node2=b;
-			} 
-			//The memory node in the address is not existed
-			if( node2==NULL ){      
-				 ;
-			}
-			else{	
-				 node2->state=(node2->state)|_value;
-			}
 
 		}
     
@@ -875,6 +877,7 @@ void MemoryRecorder::clearState()
 	}
 }
 
+
 /******************************************************************
  Title:printState
  Function:Print the state of memory to the output file
@@ -891,10 +894,11 @@ void MemoryRecorder::printState(FILE *output)
 			fprintf(output,"taint at 0x%x to 0x%x\n",node->address,node->address+31);
 			for(int j=0;j<32;j++){
 				unsigned int tmp = 1;
-				if((node->state&(tmp<j))==1){
+				if((node->state&(tmp<<j))!=0){
 					fprintf(output,"0x%x ",node->address+j);
 				}
 			}
+			node = node->nextNode;
 			fprintf(output,"\n");
 		}
 	}
