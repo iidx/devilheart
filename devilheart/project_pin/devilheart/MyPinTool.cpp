@@ -20,7 +20,7 @@
 
 
 /* File to save data for this application*/
-FILE * trace;
+//FILE * trace;
 
 /* Data strctutor to record the state of memory*/
 MemoryRecorder *memManager;
@@ -39,11 +39,11 @@ MemoryRecorder *memManager;
 ******************************************************************/
 VOID printRegisters(int es,int ds,int si,int di,int cx )
 {
-	fprintf(trace,"ES:%d  ",es);
+	/*fprintf(trace,"ES:%d  ",es);
 	fprintf(trace,"DS:%d  ",ds);
 	fprintf(trace,"SI:%d  ",si);
 	fprintf(trace,"DI:%d  ",di);
-	fprintf(trace,"CX:%d\n",cx);
+	fprintf(trace,"CX:%d\n",cx);*/
 }
 
 VOID decode(INS ins)
@@ -66,13 +66,14 @@ VOID decode(INS ins)
 			fprintf(trace,"operand%d is branch displacement\n",i);
 		else fprintf(trace,"operand%d is other type\n",i);
 	}*/
-	fprintf(trace,"Opcode:%d | operand count:%d\n",realOpcode,operandCount);
+	/*fprintf(trace,"Opcode:%d | operand count:%d\n",realOpcode,operandCount);
 	OperandKind kind = getOperandKind(ins);
-	fprintf(trace,"insNum:%d\n",INSNUM(opcode,kind));
+	fprintf(trace,"insNum:%d\n",INSNUM(opcode,kind));*/
 }
 
-void manulMarkTaint()
+void manulMarkTainted()
 {
+	//memManager->markTaintedBlock(0x0000,0x00001234);
 }
 
 /******************************************************************
@@ -88,7 +89,7 @@ void manulMarkTaint()
 VOID instruction(INS ins, VOID *v)
 {
 	/*Check whether the current instruction is what we need*/
-	string insName = INS_Disassemble(ins);
+	//string insName = INS_Disassemble(ins);
 	//if (insName.find("rep movsb")!=string::npos)
  //   {
  //       /*Insert a call to printip after rep movesb instruction*/
@@ -103,12 +104,12 @@ VOID instruction(INS ins, VOID *v)
 	/*fprintf(trace,insName.c_str());
 	fprintf(trace,"\n");
 	decode(ins);*/
-	manulMarkTainted();
 	OPCODE opcode  = INS_Opcode(ins);
 	UINT32 operandCount = INS_OperandCount(ins);
 	UINT insExt = INS_Extension(ins);
 	unsigned int realOpcode = opcode&0xffff;
-	unsigned int insKind = INSNUM(realOpcode,1);
+	OperandKind kind = getOperandKind(ins);
+	unsigned int insKind = INSNUM(realOpcode,kind);
 	handleIns(insKind,ins);
 }
 
@@ -124,8 +125,11 @@ VOID instruction(INS ins, VOID *v)
 ******************************************************************/
 VOID fini(INT32 code, VOID *v)
 {
-    fprintf(trace, "#eof\n");
-    fclose(trace);
+	endHandle();
+    /*fprintf(trace, "#eof\n");
+    fclose(trace);*/
+	/*fprintf(log,"#eof\n");
+	fclose(log);*/
 }
 
 
@@ -141,8 +145,10 @@ VOID fini(INT32 code, VOID *v)
 *******************************************************************/
 int main(int argc, char * argv[])
 {
-    trace = fopen("itrace.out", "w");
-    
+	MemoryRecorder recorder;
+	memManager = &recorder;
+	manulMarkTainted();
+    /*trace = fopen("itrace.out", "w");   */
 	/* Test mem_recorder*/
 	/*initTest();
 	testMarkTaintedMemory();
@@ -151,6 +157,9 @@ int main(int argc, char * argv[])
 	testDismarkTaintedBlock();
 	testMarkTaintedBlock();
 	closeTest();*/
+	initHandlerFuns();
+	initHandlerTable();
+	beginHandle();
 
     /* Initialize pin */
     PIN_Init(argc, argv);
@@ -164,5 +173,6 @@ int main(int argc, char * argv[])
     /* Start the program, never returns */
     PIN_StartProgram();
     
+	//endHandle();
     return 0;
 }
