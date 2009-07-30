@@ -418,6 +418,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hooks.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ins_handler.cpp"
 				>
 			</File>
@@ -441,6 +445,10 @@
 			>
 			<File
 				RelativePath=".\decoder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hooks.h"
 				>
 			</File>
 			<File

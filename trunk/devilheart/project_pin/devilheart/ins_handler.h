@@ -29,6 +29,16 @@ extern unsigned int dstA,dstB,dstC;
 /* memory recorder*/
 extern MemoryRecorder *memManager;
 
+/* handle result output file*/
+extern FILE *output;
+
+/* handle log file*/
+extern FILE *log;
+
+/* accumulator*/
+extern int countHandledIns;
+extern int countAllIns;
+
 /* define function to init handler table*/
 void initHandlerTable();
 
@@ -36,10 +46,10 @@ void initHandlerTable();
 void initHandlerFuns();
 
 /* define function to begin handling instruction*/
-void begin();
+void beginHandle();
 
 /* define function to end handling instruction*/
-void end();
+void endHandle();
 
 /* define the interface to handle the ins*/
 void handlerInsProxy(unsigned int insNum,INS ins);
