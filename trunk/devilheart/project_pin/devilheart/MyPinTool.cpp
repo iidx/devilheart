@@ -74,6 +74,13 @@ VOID decode(INS ins)
 void manulMarkTainted()
 {
 	//memManager->markTaintedBlock(0x0000,0x00001234);
+	unsigned int taintedAddress[]={
+		0x0000ABCD,0xABCD0000,0xDCBA0000,0x32165498,0x74185296,0x96385274,0x54862139,0x24753689,0x15962384,0x78415962,
+		0x12ff5c,0x7ffdf000,0x12ffdc,0x77d9446c,0x7ffdf030,0x12fff8
+	};
+	for(int i=0;i<16;i++){
+		memManager->markTaintedMemory(taintedAddress[i]);
+	}
 }
 
 /******************************************************************
@@ -88,19 +95,6 @@ void manulMarkTainted()
 ******************************************************************/
 VOID instruction(INS ins, VOID *v)
 {
-	/*Check whether the current instruction is what we need*/
-	//string insName = INS_Disassemble(ins);
-	//if (insName.find("rep movsb")!=string::npos)
- //   {
- //       /*Insert a call to printip after rep movesb instruction*/
-	//	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)printRegisters, 
-	//		IARG_REG_VALUE,REG_SEG_ES, 
-	//		IARG_REG_VALUE,REG_SEG_DS , 
-	//		IARG_REG_VALUE,REG_ESI , 
-	//		IARG_REG_VALUE,REG_EDI ,
-	//		IARG_REG_VALUE,REG_CX,
-	//		IARG_END);
- //   }
 	/*fprintf(trace,insName.c_str());
 	fprintf(trace,"\n");
 	decode(ins);*/
@@ -148,18 +142,16 @@ int main(int argc, char * argv[])
 	MemoryRecorder recorder;
 	memManager = &recorder;
 	manulMarkTainted();
-    /*trace = fopen("itrace.out", "w");   */
-	/* Test mem_recorder*/
-	/*initTest();
-	testMarkTaintedMemory();
-	testDismarkTaintedMemory();
-	testIsTainted();
-	testDismarkTaintedBlock();
-	testMarkTaintedBlock();
-	closeTest();*/
+	/* print out the state of memory*/
+	
+
 	initHandlerFuns();
 	initHandlerTable();
 	beginHandle();
+
+	fprintf(output,"****************************************************\n");
+	fprintf(output,"Before the application\n");
+	memManager->printState(output);
 
     /* Initialize pin */
     PIN_Init(argc, argv);
