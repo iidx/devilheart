@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <string.h>
 #include "ins_handler.h"
+#include "hooks.h"
 
 /* Define src and dst operand*/
 unsigned int srcA,srcB,srcC;
@@ -54,7 +55,7 @@ int (*handlerFun[])(INS ins,int srcA,int srcB,int srcC,
 		leaMRHandler,
 		leaRMHandler,	//#10
 		movRIHandler,
-		movMIHandler
+		movMIHandler,
 		repMovsbHandler
 };
 
@@ -66,19 +67,20 @@ FILE *log;
 
 /* temporate variable*/
 int regValue;
+int memAddr;
 
 /* accumulator*/
 int countHandledIns;
 int countAllIns;
 
 /* define data structor to record the state of registers*/
-#define REGNUM 30
-int regState[REGNUM];
+#define REGNUM 100
+int *regState;
 
 
 /******************************************************************
- Title:defaultHandler
- Function:Default handler to handle instruction
+ Title:getRegisterValue
+ Function:Get the value of the register
  Input:
  int value:Value of some a register
  Output:
@@ -86,6 +88,21 @@ int regState[REGNUM];
 VOID getRegisterValue(int value)
 {
 	regValue = value;
+}
+
+/******************************************************************
+ Title:getMemAddress
+ Function:Get the memory address
+ Input:
+ int value:Memory address
+ Output:
+******************************************************************/
+VOID getMemAddress(ADDRINT addr)
+{
+	//memAddr = (int)addr;
+	fprintf(log,"Address ins:0x%x\n",addr);
+	PIN_SafeCopy(&memAddr, &addr, sizeof(ADDRINT));
+
 }
 
 /******************************************************************
@@ -106,7 +123,7 @@ VOID getRegisterValue(int value)
 int defaultHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
 	string disIns = INS_Disassemble(ins);
-	fprintf(log,"Unhandler ins:%s\n",disIns.c_str());
+	fprintf(log,"Unhandle instruction: %s\n",disIns.c_str());
 	countAllIns++;
 	return 0;
 }
@@ -129,7 +146,7 @@ int defaultHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC
 int popRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
 	countAllIns++;
-	countHandledIns++:
+	countHandledIns++;
 	return 0;
 }
 
@@ -201,22 +218,30 @@ int movRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 	INT64 displacement = INS_OperandMemoryDisplacement(ins,1);
 	REG indexReg = INS_OperandMemoryIndexReg(ins,1);
 	UINT32 scale = INS_OperandMemoryScale(ins,1);
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,baseReg,
-			IARG_END);
+	if(REG_valid(baseReg)){
+		INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
+				IARG_REG_VALUE,baseReg,
+				IARG_END);
+	}
 	int valueBaseReg = regValue;
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,indexReg,
-			IARG_END);
+	if(REG_valid(indexReg)){
+		INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
+				IARG_REG_VALUE,indexReg,
+				IARG_END);
+	}
 	int valueIndexReg = regValue;
 	unsigned int realAddress = displacement+valueBaseReg+valueIndexReg*scale;
-	int state = memManager->isTainted(realAddress);
-	if(state==1){
-		REG dstReg = INS_OperandReg(ins,0);
-		regState[dstReg] = 1;
+	if(INS_IsMemoryRead(ins)){
+		INS_InsertCall(ins,
+						   IPOINT_BEFORE,
+						   AFUNPTR(movRMHook),
+						   IARG_UINT32,
+                           REG(INS_OperandReg(ins, 0)),
+                           IARG_MEMORYREAD_EA,
+						   IARG_END);
 	}else{
-		REG dstReg = INS_OperandReg(ins,0);
-		regState[dstReg] = 1;
+		fprintf(log,"Error at reading memory\n");
+		return -1;
 	}
 	countAllIns++;
 	countHandledIns++;
@@ -245,21 +270,31 @@ int movMRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 	INT64 displacement = INS_OperandMemoryDisplacement(ins,0);
 	REG indexReg = INS_OperandMemoryIndexReg(ins,0);
 	UINT32 scale = INS_OperandMemoryScale(ins,0);
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,baseReg,
-			IARG_END);
+	if(REG_valid(baseReg)){
+		INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)getRegisterValue, 
+				IARG_REG_VALUE,baseReg,
+				IARG_END);
+	}
+	//regValue = 10;
 	int valueBaseReg = regValue;
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,indexReg,
-			IARG_END);
+	if(REG_valid(indexReg)){
+		INS_InsertCall(ins, IPOINT_BEFORE, (AFUNPTR)getRegisterValue, 
+				IARG_REG_VALUE,indexReg,
+				IARG_END);
+	}
 	int valueIndexReg = regValue;
 	unsigned int realAddress = displacement+valueBaseReg+valueIndexReg*scale;
-	REG srcReg = INS_OperandReg(ins,1);
-	int state = regState[srcReg];
-	if(state==1){
-		memManager->markTaintedMemory(realAddress);
+	if(INS_IsMemoryWrite(ins)){
+		INS_InsertCall(ins,
+						   IPOINT_BEFORE,
+						   AFUNPTR(movMRHook),
+						   IARG_UINT32,
+						   REG(INS_OperandReg(ins, 1)),
+						   IARG_MEMORYWRITE_EA,
+						   IARG_END);
 	}else{
-		memManager->dismarkTaintedMemory(realAddress);
+		fprintf(log,"Error at writing memory\n");
+		return -1;
 	}
 	countAllIns++;
 	countHandledIns++;
@@ -383,19 +418,7 @@ int leaMRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 ******************************************************************/
 int leaRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
-	REG baseReg = INS_OperandMemoryBaseReg(ins,0);
-	INT64 displacement = INS_OperandMemoryDisplacement(ins,0);
-	REG indexReg = INS_OperandMemoryIndexReg(ins,0);
-	UINT32 scale = INS_OperandMemoryScale(ins,0);
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,baseReg,
-			IARG_END);
-	int valueBaseReg = regValue;
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,indexReg,
-			IARG_END);
-	int valueIndexReg = regValue;
-	unsigned int realAddress = displacement+valueBaseReg+valueIndexReg*scale;
+	unsigned int realAddress = INS_DirectBranchOrCallTargetAddress (ins,1);
 	int state = memManager->isTainted(realAddress);
 	if(state==1){
 		REG dstReg = INS_OperandReg(ins,0);
@@ -473,46 +496,19 @@ int movMIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 ******************************************************************/
 int repMovsbHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
-	REG dstBaseReg = INS_OperandMemoryBaseReg(ins,0);
-	INT64 dstDisplacement = INS_OperandMemoryDisplacement(ins,0);
-	REG dstIndexReg = INS_OperandMemoryIndexReg(ins,0);
-	UINT32 dstScale = INS_OperandMemoryScale(ins,0);
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,dstBaseReg,
-			IARG_END);
-	int valueDstBaseReg = regValue;
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,dstIndexReg,
-			IARG_END);
-	int valueDstIndexReg = regValue;
-	unsigned int realDstAddress = dstDisplacement+valueDstBaseReg+valueDstIndexReg*dstScale;
-
-	REG srcBaseReg = INS_OperandMemoryBaseReg(ins,2);
-	INT64 srcDisplacement = INS_OperandMemoryDisplacement(ins,2);
-	REG srcIndexReg = INS_OperandMemoryIndexReg(ins,2);
-	UINT32 srcScale = INS_OperandMemoryScale(ins,2);
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,srcBaseReg,
-			IARG_END);
-	int valueSrcBaseReg = regValue;
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,srcIndexReg,
-			IARG_END);
-	int valueSrcIndexReg = regValue;
-	unsigned int realSrcAddress = srcDisplacement+valueSrcBaseReg+valueSrcIndexReg*dstScale;
-
-	INS_InsertCall(ins, IPOINT_AFTER, (AFUNPTR)getRegisterValue, 
-			IARG_REG_VALUE,REG_ECX,
-			IARG_END);
-	int valueRep = regValue;
-	
-	for(int i=0;i<valueRep;i++)
-	{
-		if(memManager->isTainted(realSrcAddress+i)){
-			memManager->markTaintedMemory(realDstAddress+i);
-		}
+	if(INS_IsMemoryWrite(ins)&&INS_IsMemoryRead(ins)){
+		INS_InsertCall(ins,
+						   IPOINT_BEFORE,
+						   AFUNPTR(movMRHook),
+						   IARG_UINT32,
+						   REG_ECX,
+						   IARG_MEMORYREAD_EA,
+						   IARG_MEMORYWRITE_EA,
+						   IARG_END);
+	}else{
+		fprintf(log,"Error at writing memory\n");
+		return -1;
 	}
-
 	countAllIns++;
 	countHandledIns++;
 	return 0;
@@ -589,19 +585,22 @@ void handlerInsProxy(unsigned int insNum,INS ins)
 		handler = handlerFun[handlerNum];
 		int result = handler(ins,srcA,srcB,srcC,dstA,dstB,dstC);
 	}
-	
+	//int (*handler)(INS,int,int,int,int,int,int);
+	//handler = handlerFun[0];
+	//int result = handler(ins,srcA,srcB,srcC,dstA,dstB,dstC);
 }
 
 
 /******************************************************************
- Title:handlerInsProxy
+ Title:beginHandle
  Function:Define function to begin handling instruction
  Input:
  void
  Output:
 ******************************************************************/
-void begin()
+void beginHandle()
 {
+	regState = (int*)malloc(sizeof(int)*REGNUM);
 	for(int i=0;i<REGNUM;i++){
 		regState[i]=0;
 	}
@@ -609,28 +608,30 @@ void begin()
 	log = fopen("TaintLog.out","w");
 	countHandledIns = 0;
 	countAllIns = 0;
+	regValue = 0;
 }
 
 
 /******************************************************************
- Title:handlerInsProxy
+ Title:endHandle
  Function:Define function to end handling instruction
  Input:
  void
  Output:
 ******************************************************************/
-void end()
-{
-	/* print out the state of memory*/
-	memManager->printState(output);
-	fprintf(output,"#eof");
-
+void endHandle()
+{	
 	/* print out the log			*/
-	fprintf(log,"*****************************************************");
+	fprintf(log,"*****************************************************\n");
 	fprintf(log,"Count of instruction:%d\n",countAllIns);
 	fprintf(log,"Handle %d instruction successfully!\n",countHandledIns);
 	fprintf(log,"#eof");
-	fclose(output);
 	fclose(log);
+
+	/* print out the state of memory*/
+	memManager->printState(output);
+	fprintf(output,"#eof");
+	fclose(output);
+	
 }
 
