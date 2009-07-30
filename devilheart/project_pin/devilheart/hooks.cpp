@@ -4,9 +4,12 @@ VOID movRMHook(REG dstReg,ADDRINT * addr)
 {
 	unsigned int realAddress = (int)addr;
 	int state = memManager->isTainted(realAddress);
+	//int state = 0;
 	//fprintf(log,"Read address:0x%x\n",realAddress);
 	if(state==1){
-		regState[dstReg] = 1;
+		if(REG_valid(dstReg)){
+			regState[dstReg] = 1;
+		}
 	}else{
 		if(REG_valid(dstReg)){
 			regState[dstReg] = 0;
