@@ -418,7 +418,7 @@ int leaMRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 ******************************************************************/
 int leaRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
-	unsigned int realAddress = INS_DirectBranchOrCallTargetAddress (ins,1);
+	/*unsigned int realAddress = INS_OperandImmediate(ins,1);
 	int state = memManager->isTainted(realAddress);
 	if(state==1){
 		REG dstReg = INS_OperandReg(ins,0);
@@ -426,7 +426,12 @@ int leaRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 	}else{
 		REG dstReg = INS_OperandReg(ins,0);
 		regState[dstReg] = 1;
-	}
+	}*/
+	/*if(INS_IsMemoryRead(ins)){
+		fprintf(log,"lea ins read memory\n");
+	}else if(INS_IsMemoryWrite(ins)){
+		fprintf(log,"lea ins write memory\n");
+	}*/
 	countAllIns++;
 	countHandledIns++;
 	return 0;
@@ -629,6 +634,8 @@ void endHandle()
 	fclose(log);
 
 	/* print out the state of memory*/
+	fprintf(output,"****************************************************\n");
+	fprintf(output,"After the application\n");
 	memManager->printState(output);
 	fprintf(output,"#eof");
 	fclose(output);
