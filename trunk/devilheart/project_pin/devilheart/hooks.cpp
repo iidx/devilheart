@@ -1,5 +1,26 @@
+/*******************************************************************
+
+ Title:hooks.cpp
+ Function:Implement some hook function to handle some instructions
+ Description:
+ Implement some hook function to handle some instructions
+ Version: 1.0
+ Date and author: 2009.07.30 hsqfire
+*******************************************************************/
+
+
 #include "hooks.h"
 
+
+/******************************************************************
+ Title:movRMHook
+ Function:Hook to handle instruction "mov REG [mem addr]"
+ Input:
+ REG dstReg:dst register
+ ADDRINT *addr:src memory address
+ Output:
+ VOID
+******************************************************************/
 VOID movRMHook(REG dstReg,ADDRINT * addr)
 {
 	unsigned int realAddress = (int)addr;
@@ -17,6 +38,16 @@ VOID movRMHook(REG dstReg,ADDRINT * addr)
 	}
 }
 
+
+/******************************************************************
+ Title:movMRHook
+ Function:Hook to handle instruction "mov [mem addr],REG"
+ Input:
+ REG srcReg:src register
+ ADDRINT *addr:dst memory address
+ Output:
+ VOID
+******************************************************************/
 VOID movMRHook(REG srcReg,ADDRINT * addr)
 {
 	unsigned int realAddress = (int)addr;
@@ -33,7 +64,18 @@ VOID movMRHook(REG srcReg,ADDRINT * addr)
 	}
 }
 
-VOID repMovsbHandler(int ecx,ADDRINT *srcAddr,ADDRINT *dstAddr)
+
+/******************************************************************
+ Title:repMovsbHook
+ Function:Hook to handle instruction "rep movsb"
+ Input:
+ int ecx:value of ECX register
+ ADDRINT *srcAddr:src memory address
+ ADDRINT *dstAddr:dst memory address
+ Output:
+ VOID
+******************************************************************/
+VOID repMovsbHook(int ecx,ADDRINT *srcAddr,ADDRINT *dstAddr)
 {
 	unsigned int realSrcAddress = (int)srcAddr;
 	unsigned int realDstAddress = (int)dstAddr;
