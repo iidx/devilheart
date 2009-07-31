@@ -434,6 +434,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\taint_source.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\test_recorder.cpp"
 				>
 			</File>
@@ -457,6 +461,10 @@
 			</File>
 			<File
 				RelativePath=".\mem_recorder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\taint_source.h"
 				>
 			</File>
 			<File
