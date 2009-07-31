@@ -79,8 +79,10 @@ VOID repMovsbHook(int ecx,ADDRINT *srcAddr,ADDRINT *dstAddr)
 {
 	unsigned int realSrcAddress = (int)srcAddr;
 	unsigned int realDstAddress = (int)dstAddr;
+	
 	for(int i=0;i<ecx;i++)
 	{
+		fprintf(output,"mov data from memory at 0x%x to 0x%x\n",realSrcAddress+i,realDstAddress+i);
 		if(memManager->isTainted(realSrcAddress+i)){
 			memManager->markTaintedMemory(realDstAddress+i);
 		}
