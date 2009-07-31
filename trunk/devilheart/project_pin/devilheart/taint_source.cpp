@@ -8,7 +8,7 @@
  Date and author: 2009.07.24 ethenjean
 *******************************************************************/
 
-#include "TaintSource.h"
+#include "taint_source.h"
 
 
 
@@ -253,7 +253,7 @@ VOID Fini(INT32 code, VOID *v)
  Output:
 ******************************************************************/
  
-int main(int argc, char *argv[])
+int mymain(int argc, char *argv[])
 {
     // Initialize pin & symbol manager
     PIN_InitSymbols();
