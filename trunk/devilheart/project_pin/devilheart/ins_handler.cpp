@@ -504,7 +504,7 @@ int repMovsbHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dst
 	if(INS_IsMemoryWrite(ins)&&INS_IsMemoryRead(ins)){
 		INS_InsertCall(ins,
 						   IPOINT_BEFORE,
-						   AFUNPTR(movMRHook),
+						   AFUNPTR(repMovsbHook),
 						   IARG_UINT32,
 						   REG_ECX,
 						   IARG_MEMORYREAD_EA,
