@@ -65,12 +65,12 @@ class List{
 	friend class ListItr;
 
 private:
-	MemoryNode *head;
+	MemNode *head;
 
 public:
 	List(){head=new MemNode();}
 	~List(){MakeEmpty();delete head;}
-	int IsEmpty{return head->Next==NULL;}
+	int IsEmpty(){return head->Next==NULL;}
 	void MakeEmpty();
 
 };
@@ -101,9 +101,10 @@ public:
 	int Remove(unsigned int address);
 	int RemoveBiggerThan(unsigned int address);
 	int RemoveSmallerThan(unsigned int address);
+	int RemoveBetween(unsigned int address,unsigned int address2);
 };
 
-void ListItr::Find(unsigned int address){
+int ListItr::Find(unsigned int address){
 	MemNode *Ptr=head->Next;
 	while( Ptr!=NULL && ((address>(Ptr->address+31)) || (address<(Ptr->address))) )
 		Ptr=Ptr->Next;
@@ -113,9 +114,9 @@ void ListItr::Find(unsigned int address){
 }
 
 void ListItr::Insert(unsigned int state, unsigned int address){
-	Exception(Current==NULL,"The location is illegal!");
+	//Exception(Current==NULL,"The location is illegal!");
 	MemNode *p;
-	p=new MemNode(s,a,Current->Next);
+	p=new MemNode(state,address,Current->Next);
 	Current=Current->Next=p;
 }
 
@@ -147,7 +148,20 @@ int ListItr::RemoveBiggerThan(unsigned int address){
 
 int ListItr::RemoveSmallerThan(unsigned int address){
 	MemNode *Ptr=head;
-	while( (Ptr->Next!=NULL) && !((address>(Ptr->Next->address+31))  )
+	while( (Ptr->Next!=NULL) && !(address>(Ptr->Next->address+31))  )
+		Ptr=Ptr->Next;
+	if(Ptr->Next==NULL) return 0;//Î´ÕÒµ½£¬É¾³ıÊ§°Ü¡£
+	MemNode * P=Ptr->Next;
+	Ptr->Next=Ptr->Next->Next;
+	delete P;
+	Current=head;
+	return 1;
+
+}
+
+int ListItr::RemoveBetween(unsigned int address,unsigned int address2){
+	MemNode *Ptr=head;
+	while( (Ptr->Next!=NULL) && ((address>(Ptr->Next->address)) || (address2<(Ptr->Next->address+31))) )
 		Ptr=Ptr->Next;
 	if(Ptr->Next==NULL) return 0;//Î´ÕÒµ½£¬É¾³ıÊ§°Ü¡£
 	MemNode * P=Ptr->Next;
