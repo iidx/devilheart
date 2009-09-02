@@ -418,6 +418,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\evalue_recorder.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\hooks.cpp"
 				>
 			</File>
@@ -427,6 +431,14 @@
 			</File>
 			<File
 				RelativePath=".\mem_recorder.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mem_recorder_adv.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mem_recorder_seq.cpp"
 				>
 			</File>
 			<File
@@ -441,6 +453,14 @@
 				RelativePath=".\test_recorder.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\test_recorder_adv.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\test_recorder_seq.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -449,6 +469,10 @@
 			>
 			<File
 				RelativePath=".\decoder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\evalue_recorder.h"
 				>
 			</File>
 			<File
@@ -464,11 +488,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\mem_recorder_adv.h"
+				>
+			</File>
+			<File
+				RelativePath=".\mem_recorder_seq.h"
+				>
+			</File>
+			<File
 				RelativePath=".\taint_source.h"
 				>
 			</File>
 			<File
 				RelativePath=".\test_recorder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\test_recorder_adv.h"
+				>
+			</File>
+			<File
+				RelativePath=".\test_recorder_seq.h"
 				>
 			</File>
 		</Filter>
