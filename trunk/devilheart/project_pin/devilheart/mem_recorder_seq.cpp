@@ -194,7 +194,13 @@ bool MemoryRecorderSeq::markTaintedMemory(unsigned int address)
 				current = current->nextNode;
 			}
 		}
-		return false;
+		if(current==NULL){
+			pre->nextNode = (MemNode*)malloc(sizeof(MemNode));
+			pre->address = address - address%32;
+			pre->nextNode = current;
+			pre->state = 1;
+			return true;
+		}
 	}
 }
 
@@ -222,6 +228,19 @@ bool MemoryRecorderSeq::dismarkTaintedMemory(unsigned int address)
 	}else{
 		MemNode *pre = current;
 		current = current->nextNode;
+		if(address>=pre->address){
+			if(address<=(pre->address+31)){
+				int state = pre->state&((unsigned int)(1<<section));
+				if(state==0){
+					return false;
+				}else{
+					pre->state = pre->state&((unsigned int)(0xffffffff-(1<<section)));
+					return true;
+				}
+			}else{
+				return false;
+			}
+		}
 		while(current!=NULL){
 			if(address>=current->address){
 				if(address<=(current->address+31)){
