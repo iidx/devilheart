@@ -62,7 +62,7 @@ void testMarkTaintedMemory()
 		bool result = recorder.markTaintedMemory(taintedAddress[i]);
 		if(result!=testResult[i]){
 			failNum ++;
-			fprintf(traceT,"mark address:0x%x  result:fail\n",taintedAddress[i]);
+			fprintf(traceTA,"mark address:0x%x  result:fail\n",taintedAddress[i]);
 		}else{
 			//fprintf(traceT,"mark address:0x%x  result:success\n",taintedAddress[i]);
 		}
@@ -89,11 +89,11 @@ void testDismarkTaintedMemory()
 	};
 	
 	unsigned int untaintedAddress[]={
-		0x0000000D,0x000E000,0xF0000000
+		0x0000000D,0x000B000,0xF0000000
 	};
 
 	bool testResult[]={
-		true,true,true
+		false,true,false
 	};
 
 	MemoryRecorderAdv recorder;
@@ -242,7 +242,7 @@ void testMarkTaintedBlock()
 		int result = recorder.isTainted(testAddress[i]);
 		if(result!=testResult[i]){
 			failNum ++;
-			fprintf(traceT,"test state of address:0x%x  result:fail\n",testAddress[i]);
+			fprintf(traceTA,"test state of address:0x%x  result:fail\n",testAddress[i]);
 		}else{
 			//fprintf(traceT,"test state of address:0x%x  result:success\n",testAddress[i]);
 		}
