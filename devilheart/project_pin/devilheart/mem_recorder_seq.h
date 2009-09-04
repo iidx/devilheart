@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <iomanip>
-#include "mem_recorder.h"
+#include "mem_node.h"
 
 /* this class is responsible for recording states of
    all memory                                      */

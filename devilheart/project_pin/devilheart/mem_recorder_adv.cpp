@@ -145,9 +145,21 @@ bool MemoryRecorderAdv::markTaintedMemory(unsigned int address)
 	}else{
 		MemNode *pre = current;
 		current = current->nextNode;
+		if(address<pre->address){
+			memoryList[location] = (MemNode*)malloc(sizeof(MemNode));
+			memoryList[location]->address = address;
+			memoryList[location]->nextNode = pre;
+			memoryList[location]->state = (unsigned int)1;
+			return true;
+		}else if(address==pre->address){
+			if(pre->state==0){
+				pre->state=1;
+				return true;
+			}else return false;
+		}
 		while(current!=NULL){
-			if(address>=current->address){
-				if(address=current->address){
+			if(address<=current->address){
+				if(address==current->address){
 					if(current->state==0){
 						current->state = 1;
 						return true;
@@ -166,7 +178,13 @@ bool MemoryRecorderAdv::markTaintedMemory(unsigned int address)
 				current = current->nextNode;
 			}
 		}
-		return false;
+		if(current==NULL){
+			pre->nextNode = (MemNode*)malloc(sizeof(MemNode));
+			pre->address = address;
+			pre->nextNode = current;
+			pre->state = 1;
+			return true;
+		}
 	}
 }
 
@@ -193,9 +211,17 @@ bool MemoryRecorderAdv::dismarkTaintedMemory(unsigned int address)
 	}else{
 		MemNode *pre = current;
 		current = current->nextNode;
+		if(address<pre->address){
+			return false;
+		}else if(address==pre->address){
+			if(pre->state==1){
+				pre->state=0;
+				return true;
+			}else return false;
+		}
 		while(current!=NULL){
 			if(address>=current->address){
-				if(address=current->address){
+				if(address==current->address){
 					int state = current->state;
 					if(state==0){
 						return false;
@@ -231,20 +257,20 @@ bool MemoryRecorderAdv::markTaintedBlock(unsigned int address, int length)
 		return false;
 	}
 	int location = 0;
-	int currentAdd = address;
+	unsigned int currentAdd = address;
 	MemNode *currentNode = NULL;
 	MemNode *preNode = NULL;
 	for(location=0;location<amountOfPage;location++){
 		int num = address/hashcode;
-		if(address%hashcode>location && (address+length)<(num+1)*hashcode+location)
+		if(address%hashcode>(unsigned)location && (address+length)<(unsigned)(num+1)*hashcode+location)
 			continue;
-		else if(address%hashcode<location && (address+length)<num*hashcode+location)
+		else if(address%hashcode<(unsigned)location && (address+length)<(unsigned)num*hashcode+location)
 			continue;
 		else{
 			currentAdd = address-address%hashcode+location;
 			if(memoryList[location]==NULL){
 				memoryList[location] = (MemNode*)malloc(sizeof(MemNode));
-				if(minAddress%hashcode<location)
+				if(minAddress%hashcode<(unsigned)location)
 					memoryList[location]->address = minAddress-minAddress%hashcode+location;
 				else
 					memoryList[location]->address = minAddress+location;
@@ -265,7 +291,7 @@ bool MemoryRecorderAdv::markTaintedBlock(unsigned int address, int length)
 					currentAdd += hashcode;
 				}
 				while(currentAdd<= maxAddress && currentAdd<=address+length-1){
-					if(currentNode==null){
+					if(currentNode==NULL){
 						preNode->nextNode = (MemNode*)malloc(sizeof(MemNode));
 						currentNode = preNode->nextNode;
 						currentNode->address = currentAdd;
@@ -315,14 +341,14 @@ bool MemoryRecorderAdv::dismarkTaintedBlock(unsigned int address, int length)
 		return false;
 	}
 	int location=address%hashcode;
-	int currentAdd = address;
+	unsigned int currentAdd = address;
 	MemNode *currentNode = NULL;
 	MemNode *preNode = NULL;
 	for(location=0;location<amountOfPage;location++){
 		int num = address/hashcode;
-		if(address%hashcode>location && (address+length)<(num+1)*hashcode+location)
+		if(address%hashcode>(unsigned)location && (address+length)<(unsigned)(num+1)*hashcode+location)
 			continue;
-		else if(address%hashcode<location && (address+length)<num*hashcode+location)
+		else if(address%hashcode<(unsigned)location && (address+length)<(unsigned)num*hashcode+location)
 			continue;
 		else{
 			currentAdd = address-address%hashcode+location;
