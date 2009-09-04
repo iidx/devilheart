@@ -484,6 +484,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\mem_node.h"
+				>
+			</File>
+			<File
 				RelativePath=".\mem_recorder.h"
 				>
 			</File>
