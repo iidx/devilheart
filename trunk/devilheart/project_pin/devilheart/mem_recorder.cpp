@@ -178,7 +178,7 @@ bool MemoryRecorder::markTaintedMemory(unsigned int address)
 	} 
 	//The memory node in the address is not existed
 	if( node==NULL ){      
-		 MemNode n;    
+		 //MemNode n;    
 		 int startNodeAddress=address-address%32;
 		 int _state=0|(int)(pow(2.0,(double)(address%32)));
 		 /*n.address=startNodeAddress;
@@ -304,20 +304,25 @@ bool MemoryRecorder::markTaintedBlock(unsigned int address, int length)
 			memoryList[startLocation]->nextNode=NULL;
 		}
 
-		MemNode* a=node; //Pre node of the current node
+		MemNode* prenode=node; //Pre node of the current node
 		//Find the memory node in the address	
-		while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
-			a = node;
-			if((node->address)>address){
-				MemNode *temp=node;
-				MemNode *it=node->nextNode;
-				node=node->nextNode;
-				a->nextNode=it; 
-				delete temp;
-				continue;
+		while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 
+			MemNode *nextnode=node->nextNode;
+			if(nextnode==NULL) 
+			{
+				node=NULL;
+				break;
 			}
-			node=node->nextNode;
-			//node=a;
+			else if((node->address)>address){
+				//MemNode *it=node->nextNode;
+				node->address=nextnode->address;
+				node->nextNode=nextnode->nextNode;
+				node->state=nextnode->state;
+				delete nextnode;
+			}
+			else 
+				node=node->nextNode;
+			prenode=node;
 		} 
 		//The memory node in the address is not existed
 		if( node==NULL ){      
@@ -326,10 +331,10 @@ bool MemoryRecorder::markTaintedBlock(unsigned int address, int length)
 			 n.address=startNodeAddress;
 			 n.state=_state;
 			 n.nextNode = NULL;
-			 a->nextNode= (MemNode*)malloc(sizeof(MemNode));
-			 a->nextNode->address=startNodeAddress;
-			 a->nextNode->state=_state;
-			 a->nextNode->nextNode=NULL;
+			 prenode->nextNode= (MemNode*)malloc(sizeof(MemNode));
+			 prenode->nextNode->address=startNodeAddress;
+			 prenode->nextNode->state=_state;
+			 prenode->nextNode->nextNode=NULL;
 		}
 		else{	
 			 node->state=(node->state)|value;
@@ -395,20 +400,25 @@ bool MemoryRecorder::markTaintedBlock(unsigned int address, int length)
 			memoryList[endLocation]->nextNode = NULL;
 			memoryList[endLocation]->state = _state;
 		}
-		MemNode* b=node3; //Pre node of the current node
+		MemNode* prenode3=node3; //Pre node of the current node
 		//Find the memory node in the address	
 		while( (node3!=NULL) && ((endAddress>(node3->address+31)) | (endAddress<(node3->address)))  ){ 	
-			b = node3;
-			if((node3->address+31)<endAddress){
-				MemNode *temp=node3;
-				MemNode *it=node3->nextNode;
-				node3=node3->nextNode;
-				b->nextNode=it; 
-				delete temp;
-				continue;
+			if(node3->nextNode==NULL)
+			{
+				node3=NULL;
+				break;
 			}
-			node3=node3->nextNode;
-			//node3=a;
+			else if((node3->address+31)<endAddress){
+				//MemNode *temp=node3;
+				MemNode *nextnode=node3->nextNode;
+				node3->address=nextnode->address;
+				node3->nextNode=nextnode->nextNode;
+				node3->state=nextnode->state;
+				delete nextnode;
+			}
+			else
+				node3=node3->nextNode;
+			prenode3=node3;
 		} 
 		//The memory node in the address is not existed
 		if( node3==NULL ){      
@@ -417,10 +427,10 @@ bool MemoryRecorder::markTaintedBlock(unsigned int address, int length)
 			 /*n.address=endAddress;
 			 n.state=_state;
 			 n.nextNode = NULL;*/
-			 b->nextNode=(MemNode*)malloc(sizeof(MemNode));
-			 b->nextNode->address = endAddress;
-			 b->nextNode->nextNode = NULL;
-			 b->nextNode->state = _state;
+			 prenode3->nextNode=(MemNode*)malloc(sizeof(MemNode));
+			 prenode3->nextNode->address = endAddress;
+			 prenode3->nextNode->nextNode = NULL;
+			 prenode3->nextNode->state = _state;
 			 
 		}
 		else{	
@@ -531,84 +541,86 @@ bool MemoryRecorder::markTaintedBlock(unsigned int address, int length)
 			memoryList[startLocation]->nextNode=NULL;
 			memoryList[startLocation]->state=_state;
 		}
-		MemNode* a=node; //Pre node of the current node
+		MemNode* prenode=node; //Pre node of the current node
 		//Find the memory node in the address	
 		while( (node!=NULL) && ((address>(node->address+31)) | (address<(node->address)))  ){ 	
-			a = node;
-			if( ((node->address)>address)&& ((node->address)<endNodeAddress) ){
-				MemNode *temp=node;
-				MemNode *it=node->nextNode;
-				node=node->nextNode;
-				a->nextNode=it; 
-				delete temp;
+			if(node->nextNode==NULL)
+			{
+				node=NULL;
+				break;
+			}
+			else if( ((node->address)>address)&& ((node->address)<endNodeAddress) ){
+				//MemNode *temp=node;
+				MemNode *nextnode=node->nextNode;
+				node->address=nextnode->address;
+				node->nextNode=nextnode->nextNode;
+				node->state=nextnode->state;
+				//a->nextNode=it; 
+				delete nextnode;
 				continue;
 			}
-			node=node->nextNode;
-			//node=a;
-			} 
-			//The memory node in the address is not existed
-			if( node==NULL ){      
-				/*MemNode n;  */  
-				int _state=0|value;
-				/*n.address=startNodeAddress;
-				n.state=_state;
-				n.nextNode = NULL;*/
-				a->nextNode=(MemNode*)malloc(sizeof(MemNode));
-				a->nextNode->address=startNodeAddress;
-				a->nextNode->nextNode=NULL;
-				a->nextNode->state=_state;
-			}
-			else{	
+			else 
+				node=node->nextNode;
+			prenode=node;
+		} 
+		//The memory node in the address is not existed
+		if( node==NULL ){      
+			/*MemNode n;  */  
+			int _state=0|value;
+			/*n.address=startNodeAddress;
+			n.state=_state;
+			n.nextNode = NULL;*/
+			prenode->nextNode=(MemNode*)malloc(sizeof(MemNode));
+			prenode->nextNode->address=startNodeAddress;
+			prenode->nextNode->nextNode=NULL;
+			prenode->nextNode->state=_state;
+		}
+		else{	
 				node->state=(node->state)|value;
-			}
-
-			int nodeNumberBetween=(endNodeAddress-( startNodeAddress+32))/32;
-				if(nodeNumberBetween!=0){
-					for(int i=1;i<=nodeNumberBetween;i++){
-						/*MemNode z;*/
-						int address_=startNodeAddress+32*i;
-						int state_=0xFFFFFFFF;
-						/*z.address=address_;
-						z.state=state_;
-						z.nextNode=NULL;*/
-						node->nextNode=(MemNode*)malloc(sizeof(MemNode));
-						node->nextNode->address=startNodeAddress+32*i;
-						node->nextNode->nextNode=NULL;
-						node->nextNode->state=state_;
-						node=node->nextNode;
-					}
-			}
-
-			MemNode* node2=memoryList[startLocation];
-
-			MemNode* b=node2; //Pre node of the current node
-			//Find the memory node in the address 
-			while( (node2!=NULL) && ((endAddress>(node2->address+31)) | (endAddress<(node2->address)))  ){ 	
-				b=node2;
-				node2=node2->nextNode;
-			//node2=b;
-			} 
-			//The memory node in the address is not existed
-			if( node2==NULL ){      
-				/*MemNode n;  */  
-				int _state=0|_value;
-				/*n.address=endNodeAddress;
-				n.state=_state;
-				n.nextNode = NULL;*/
-				b->nextNode=(MemNode*)malloc(sizeof(MemNode));
-				b->nextNode->address=endNodeAddress;
-				b->nextNode->nextNode=NULL;
-				b->nextNode->state=_state;
-			}
-			else{	
-				node2->state=(node2->state)|_value;
-			}
 		}
 
-		return true;
+		int nodeNumberBetween=(endNodeAddress-( startNodeAddress+32))/32;
+		if(nodeNumberBetween!=0){
+			for(int i=1;i<=nodeNumberBetween;i++){
+				/*MemNode z;*/
+				int address_=startNodeAddress+32*i;
+				int state_=0xFFFFFFFF;
+				/*z.address=address_;
+				z.state=state_;
+				z.nextNode=NULL;*/
+				node->nextNode=(MemNode*)malloc(sizeof(MemNode));
+				node->nextNode->address=startNodeAddress+32*i;
+				node->nextNode->nextNode=NULL;
+				node->nextNode->state=state_;
+				node=node->nextNode;
+			}
+		}
+		MemNode* node2=memoryList[startLocation];
+		MemNode* b=node2; //Pre node of the current node
+		//Find the memory node in the address 
+		while( (node2!=NULL) && ((endAddress>(node2->address+31)) | (endAddress<(node2->address)))  ){ 	
+			b=node2;
+			node2=node2->nextNode;
+		//node2=b;
+		} 
+		//The memory node in the address is not existed
+		if( node2==NULL ){      
+			/*MemNode n;  */  
+			int _state=0|_value;
+			/*n.address=endNodeAddress;
+			n.state=_state;
+			n.nextNode = NULL;*/
+			b->nextNode=(MemNode*)malloc(sizeof(MemNode));
+			b->nextNode->address=endNodeAddress;
+			b->nextNode->nextNode=NULL;
+			b->nextNode->state=_state;
+		}
+		else{	
+			node2->state=(node2->state)|_value;
+		}
 	}
-
-
+	return true;
+}
 
 }
 /******************************************************************
@@ -902,4 +914,19 @@ void MemoryRecorder::printState(FILE *output)
 			fprintf(output,"\n");
 		}
 	}
+}
+
+//delete a node from the list
+void deleteANode(MemNode *node)
+{
+	MemNode *nextnode=node->nextNode;
+	node->address=nextnode->address;
+	node->state=nextnode->state;
+	node->nextNode=nextnode->nextNode;
+	delete nextnode;
+}
+
+void setANode(MemNode *node)
+{
+
 }

@@ -18,6 +18,7 @@
 #include "mem_recorder.h"
 #include "test_recorder.h"
 
+#include "taint_source.h"
 
 /* File to save data for this application*/
 //FILE * trace;
@@ -108,6 +109,58 @@ VOID instruction(INS ins, VOID *v)
 	handleIns(insKind,ins);
 }
 
+VOID TaintSource(RTN rtn, VOID *v)
+{
+	if(RTN_Name(rtn)=="CreateFileW")
+    {
+        flag=1;
+		string FileName="";
+        RTN_Open(rtn);
+
+        // Instrument malloc() to print the input argument value and the return value.
+        RTN_InsertCall(rtn, IPOINT_BEFORE, (AFUNPTR)FindObjectByName,
+                       IARG_FUNCARG_ENTRYPOINT_VALUE, 0,
+                       IARG_END);
+		RTN_InsertCall(rtn, IPOINT_AFTER, (AFUNPTR)SetCFWReturnValue,
+					   IARG_FUNCRET_EXITPOINT_VALUE,
+                       IARG_END);
+        RTN_Close(rtn);
+    }
+	else
+		if(RTN_Name(rtn)=="CreateFileMappingW")
+    {
+		
+        RTN_Open(rtn);
+
+        // Instrument malloc() to print the input argument value and the return value.
+        RTN_InsertCall(rtn, IPOINT_BEFORE, (AFUNPTR)FindMatchingCFMW,
+                       IARG_FUNCARG_ENTRYPOINT_VALUE, 0,
+					   IARG_FUNCARG_ENTRYPOINT_VALUE, 3,
+					   IARG_FUNCARG_ENTRYPOINT_VALUE, 4,
+                       IARG_END);
+		RTN_InsertCall(rtn, IPOINT_AFTER, (AFUNPTR)SetCFMWReturnValue,
+					   IARG_FUNCRET_EXITPOINT_VALUE,
+                       IARG_END);
+        RTN_Close(rtn);
+    }	
+		else
+			if(RTN_Name(rtn)=="MapViewOfFileEx")
+    {
+		
+        RTN_Open(rtn);
+
+        // Instrument malloc() to print the input argument value and the return value.
+        RTN_InsertCall(rtn, IPOINT_BEFORE, (AFUNPTR)FindMachingMVF,
+                       IARG_FUNCARG_ENTRYPOINT_VALUE, 0,
+                       IARG_END);
+		RTN_InsertCall(rtn, IPOINT_AFTER, (AFUNPTR)SetMappingBase,
+                       IARG_FUNCRET_EXITPOINT_VALUE,
+                       IARG_END);
+        RTN_Close(rtn);
+    }	
+  
+  
+}
 
 /******************************************************************
  Title:fini
@@ -159,6 +212,10 @@ int main(int argc, char * argv[])
 
     /* Register instruction to be called to instrument instruction */
     INS_AddInstrumentFunction(instruction, 0);
+
+
+	RTN_AddInstrumentFunction(TaintSource, 0);
+
 
     /* Register fini to be called when the application exits */
     PIN_AddFiniFunction(fini, 0);

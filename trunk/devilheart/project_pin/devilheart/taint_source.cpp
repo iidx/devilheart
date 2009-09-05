@@ -12,27 +12,14 @@
 
 
 
-/******************************************************************
- some global values
-******************************************************************/
-long bytes;
-
-ADDRINT addr;
-
-std::ofstream TraceFile;
-
-WINDOWS::HANDLE mappinghandle;
-
-WINDOWS::HANDLE createhandle;
-
-
-/******************************************************************
- command lines
-******************************************************************/
+/* ===================================================================== */
+/* Commandline Switches */
+/* ===================================================================== */
 
 KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool",
-    "o", "TaintSourceInfo.out", "specify trace file name");
+    "o", "malloctrace.out", "specify trace file name");
 
+/* ===================================================================== */
 
 INT32 Usage()
 {
@@ -44,236 +31,133 @@ INT32 Usage()
     return -1;
 }
 
-/******************************************************************
- Title:getBytes
- Function:return the number of tainted bytes 
- Input: 
- Output: 
-******************************************************************/
+
+/* ===================================================================== */
+/* Analysis routines                                                     */
+/* ===================================================================== */
  
-long getBytes()
+VOID FindObjectByName(wchar_t *name)
 {
-	return bytes;
+    flag=1;
+	//用于比较文件名的字符串
+	string NameStr="";
+	//记录原指针
+	wchar_t* name0=name;
+	//将字符串内容读入NameStr以便比较
+	for(;*name!='\0';name++)
+	{
+		NameStr+=*name;
+	}
+    //记录原指针
+	name=name0;
+    //如果确认读入目标文件则进行处理
+	if(NameStr.find(FILE_NAME)!=string::npos)
+	{
+        int i;
+        //找到第一个未用结构的位置
+        for(i=0;CFWdata[i].sign !=0;i++)
+            ;
+        //将返回值设置为-2，作为标记通知此处应该赋返回值
+        CFWdata[i].CFWHandle = -2;
+        CFWdata[i].sign = 1;
+        CFWdata[i+1].sign = 0;
+	}
+}
+VOID SetCFWReturnValue(ADDRINT fileHandle)
+{
+    //记录CreateFileW的返回值
+	if(fileHandle)
+	{
+        int i;
+        for(i=0;CFWdata[i].sign != 0;i++)
+        {
+            if(CFWdata[i].CFWHandle==-2)
+            {
+                CFWdata[i].CFWHandle =fileHandle;
+            }
+        }
+	}
 }
 
-/******************************************************************
- Title:Createfile
- Function:return the start address of tainted source
- Input: 
- Output: 
-******************************************************************/
+VOID FindMatchingCFMW(ADDRINT hfile,ADDRINT offsethigh,ADDRINT offsetlow)
+{
+
+    //判断CreateFileMapping参数是否与CreateFileW返回值匹配，如匹配则进行处理
+    int i;
+    for(i=0;CFWdata[i].sign !=0;i++)
+    {
+        if(CFWdata[i].CFWHandle == hfile )
+        {
+            int j;
+            for(j=0;CFMWdata[j].sign!=0;j++)
+                ;
+            CFMWdata[j].sign=1;
+            CFMWdata[j+1].sign = 0;
+            CFMWdata[j].Filedata = &CFWdata[i];
+            CFMWdata[j].sizeHigh = offsethigh;
+            CFMWdata[j].sizeLow = offsetlow;
+            CFMWdata[j].CFMWHandle = -2;
+        }
+    }
+}
+VOID SetCFMWReturnValue(UINT32 mappingHandle)
+{
+
+	//对每个标志位不为0的CFMWdata进行扫描，找到handle被标志为-2的那个进行赋值
+    int i;
+    for(i=0;CFMWdata[i].sign!=0;i++)
+    {
+        if(CFMWdata[i].CFMWHandle == -2)
+        {
+            CFMWdata[i].CFMWHandle = mappingHandle;
+        }
+    }
+}
+VOID FindMachingMVF(ADDRINT mappingHandle)
+{
+
+	//找到匹配的MapViewOfFile进行赋值和标记
+    int i;
+    for(i=0;CFMWdata[i].sign!=0;i++)
+    {
+        int j;
+        if(CFMWdata[i].CFMWHandle == mappingHandle)
+        {
+            for(j=0;MVFdata[j].sign!=0;j++)
+            ;
+            MVFdata[j].FileMappingdata = &CFMWdata[i];
+            MVFdata[j].sign=1;
+            MVFdata[j+1].sign = 0;
+            MVFdata[j].MVFReturnHandle = -2;
+        }
+    }
+}
+VOID SetMappingBase(ADDRINT base)
+{
+
+	//搜索数组，找到被标记的结构进行赋值
+    int i;
+    for(i=0;MVFdata[i].sign!=0;i++)
+    {
+        if(MVFdata[i].MVFReturnHandle==-2)
+            MVFdata[i].MVFReturnHandle=base;
+			flag=1;
+    }
+}
+
 ADDRINT getAddr()
 {
-	return addr;
+	return MVFdata[0].MVFReturnHandle;
 }
 
-/******************************************************************
- Title:Createfile
- Function:to find the filename and generated handle,then record them
- Input: 
- LPCTSTR:name   path of the file that will be opened
- HANDLE: hfile  the handle createfile generated
- Output: print out the info to log file
-******************************************************************/
-VOID Createfile(WINDOWS::LPCTSTR  name,WINDOWS::HANDLE hfile)
+ADDRINT getSizeH()
 {
-	//get entire filename from path
-	string sourcepath="";
-	
-	for(;*name!='0';name++)
-	{
-		sourcepath+=*name;
-		if( *name=='\\')
-			sourcepath="";
-	}
-
-	//remove blank from filename
-	char c=sourcepath.at(0);
-	string file="";
-	
-	for(int i=0;i<sourcepath.length();i++)
-	{
-		if(sourcepath.at(i)!=c)
-			file+=sourcepath.at(i);
-	}
-
-	//get the real file name
-	string sour=FileName;
-	int size=sour.length();
-	
-	string filename=file.substr(0,size);
-
-	//record the target file info
-	if(filename==FileName)
-	{
-		createhandle=hfile;
-		TraceFile<<"*****get the target file*****"<<endl<<filename<<endl;
-		TraceFile<<"Create Handle:"<<hfile<<endl;
-		TraceFile<<"Source Handle:"<<createhandle<<endl;
-	}
+	return MVFdata[0].FileMappingdata->sizeHigh;
 }
 
-/******************************************************************
- Title:Createfilemapping
- Function:find the handle that match with the target handle
- Input:
- HANDLE:chandle the source handle created by creatfile
- HANDLE:mhandle the handle that createfilemapping created
- Output:print out the info to log file
-******************************************************************/
-
-VOID Createfilemapping(WINDOWS::HANDLE chandle,WINDOWS::LPCTSTR  name,WINDOWS::HANDLE mhandle)
-{	
-
-	TraceFile<<"Source Create Handle:"<<createhandle<<endl;
-	TraceFile<<"Current Create Handle:"<<chandle<<endl;
-	string sourcepath="";
-
-	TraceFile<<"filename:"<<name<<endl;
-	
-	if(chandle==createhandle)
-	mappinghandle=mhandle;
-	TraceFile << "Content:createfilemapping handle:"<<mhandle << endl;
-}
-
-/******************************************************************
- Title:Mapviewoffile
- Function:find the mapping handle that match with the target handle
- Input:
- HANDLE:mhandle the source handle created by createfilemapping
- long:num		the number of bytes mapped from file to memory
- ADDRINT:ret	the start address that mapping to file
- Output:	printout the info to log file
-******************************************************************/
-
-VOID Mapviewoffile(WINDOWS::HANDLE mhandle,long num,ADDRINT ret)
-{	
-	TraceFile<<"Source Mapping Handle:"<<mappinghandle<<endl;
-	TraceFile<<"Current Mapping Handle:"<<mhandle<<endl;
-	if(mappinghandle==mhandle)
-	{
-		bytes=num;
-		addr=ret;
-	}
-	if(num>0){
-		bytes=num;
-		addr=ret;
-	}
-	TraceFile << "Content:mapviewoffile bytes:"<<num<<" addr:" <<ret<<endl;
-}
-
-/******************************************************************
- Title:Image
- Function:insert call to program as image
- Input:
- IMG:img  the image that will be inserted
- Void:*v  usually set to 0
- Output:
-******************************************************************/
-   
-VOID Image(IMG img, VOID *v)
+ADDRINT getSizeL()
 {
-    
-    //  Find the createfile function.
-    RTN mallocRtn = RTN_FindByName(img, CreateFile);
-    if (RTN_Valid(mallocRtn))
-    {
-        RTN_Open(mallocRtn);
-        RTN_InsertCall(mallocRtn, IPOINT_BEFORE, (AFUNPTR)Createfile,
-                       IARG_FUNCARG_ENTRYPOINT_VALUE,0,//the first argument
-					   IARG_FUNCRET_EXITPOINT_VALUE,//the return value
-                       IARG_END);
-        RTN_Close(mallocRtn);
-    }
-    
-	//find the createfilemapping function
-	mallocRtn = RTN_FindByName(img, CreateFileMapping);
-    if (RTN_Valid(mallocRtn))
-    {
-		RTN_Open(mallocRtn);
-
-	   
-		RTN_InsertCall(mallocRtn, IPOINT_BEFORE, (AFUNPTR)Createfilemapping,
-					   IARG_FUNCARG_ENTRYPOINT_VALUE,0,//the first argument
-					   IARG_FUNCARG_ENTRYPOINT_VALUE,5,
-					   IARG_FUNCRET_EXITPOINT_VALUE,//the return value
-					   IARG_END);
-		RTN_Close(mallocRtn);
-	}
-
-	//find the mapviewoffile function
-	mallocRtn = RTN_FindByName(img, MapViewOfFile);
-    if (RTN_Valid(mallocRtn))
-    {
-        RTN_Open(mallocRtn);
-
-        
-        RTN_InsertCall(mallocRtn, IPOINT_BEFORE, (AFUNPTR)Mapviewoffile,
-						IARG_FUNCARG_ENTRYPOINT_VALUE,0,//the first argument
-					   IARG_FUNCARG_ENTRYPOINT_VALUE,4,//the fifth argument
-                       IARG_FUNCRET_EXITPOINT_VALUE,//the return value
-                       IARG_END);
-        RTN_Close(mallocRtn);
-    }
-	mallocRtn = RTN_FindByName(img, MapViewOfFileEx);
-    if (RTN_Valid(mallocRtn))
-    {
-        RTN_Open(mallocRtn);
-
-        
-        RTN_InsertCall(mallocRtn, IPOINT_BEFORE, (AFUNPTR)Mapviewoffile,
-						IARG_FUNCARG_ENTRYPOINT_VALUE,0,//the first argument
-					   IARG_FUNCARG_ENTRYPOINT_VALUE,4,//the fifth argument
-                       IARG_FUNCRET_EXITPOINT_VALUE,//the return value
-                       IARG_END);
-        RTN_Close(mallocRtn);
-    }
+	return MVFdata[0].FileMappingdata->sizeLow;
 }
-
-/******************************************************************
- Title:Fini
- Function:when program exit thie will be called
- Input:
- Output:
-******************************************************************/
  
-VOID Fini(INT32 code, VOID *v)
-{
-	TraceFile<<"Address:"<<addr<<endl;
-	TraceFile<<"Bytes:"<<bytes<<endl;
-    TraceFile.close();
-}
-
-/******************************************************************
- Title:Image
- Function:insert call to program as image
- Input:
- IMG:img  the image that will be inserted
- Void:*v  usually set to 0
- Output:
-******************************************************************/
- 
-int mymain(int argc, char *argv[])
-{
-    // Initialize pin & symbol manager
-    PIN_InitSymbols();
-    if( PIN_Init(argc,argv) )
-    {
-        return Usage();
-    }
-    
-    // Write to a file since cout and cerr maybe closed by the application
-    TraceFile.open(KnobOutputFile.Value().c_str());
-    TraceFile << hex;
-    TraceFile.setf(ios::showbase);
-    
-    // Register Image to be called to instrument functions.
-    IMG_AddInstrumentFunction(Image, 0);
-    PIN_AddFiniFunction(Fini, 0);
-
-    // Never returns
-    PIN_StartProgram();
-    
-    return 0;
-}
 
