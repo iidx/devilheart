@@ -430,6 +430,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\list.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ListItr.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\mem_recorder.cpp"
 				>
 			</File>
