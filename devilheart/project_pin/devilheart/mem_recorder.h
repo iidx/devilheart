@@ -36,7 +36,7 @@ class Node{
 	friend class List;
 	friend class ListItr;
 	
-public:	//被我改成PUBLIC
+public:	//
 	/* An unsigned integer to record the state of 32 
 	   continuous bytes in memory.
 	   Here the lower bit represents the lower byte 
@@ -77,10 +77,10 @@ public:
 
 
 
-//迭代器类
+//Iterator class
 class ListItr{
 
-public://被我改成PUBLIC
+public://
 	Node * const head;
 	Node * Current;
 
