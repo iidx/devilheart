@@ -28,9 +28,15 @@
 
 
 /* Struct to represent 8 continuous bytes in memory*/
-struct MemNode;
+class Node;
+class List;
+class ListItr;
 
-struct MemNode{
+class Node{
+	friend class List;
+	friend class ListItr;
+	
+public:	//被我改成PUBLIC
 	/* An unsigned integer to record the state of 32 
 	   continuous bytes in memory.
 	   Here the lower bit represents the lower byte 
@@ -44,8 +50,53 @@ struct MemNode{
 	unsigned int address;
 
 	/* Pointer to next 32 continuous bytes in memory*/
-	MemNode *nextNode;
+	Node *Next;
+
+public:
+	Node(unsigned int s,unsigned int a,Node *n=NULL):state(s),address(a),Next(n){}
+	Node():Next(NULL){}
+	~Node(){};
+
 };
+
+
+
+class List{
+	friend class ListItr;
+
+private:
+	Node *head;
+
+public:
+	List(){head=new Node();}
+	~List(){}
+	int IsEmpty(){return head->Next==NULL;}
+	void MakeEmpty();
+
+};
+
+
+
+//迭代器类
+class ListItr{
+
+public://被我改成PUBLIC
+	Node * const head;
+	Node * Current;
+
+public:
+	ListItr(List L):head(L.head)
+	{Current=L.IsEmpty()?head:head->Next;}
+	~ListItr(){};
+	int Find(unsigned int address);
+	void Insert(unsigned int state,unsigned int address);
+	int Remove(unsigned int address);
+	int RemoveBiggerThan(unsigned int address);
+	int RemoveSmallerThan(unsigned int address);
+	int RemoveBetween(unsigned int address,unsigned int address2);
+};
+
+
 
 
 /* this class is responsible for recording states of
@@ -57,7 +108,7 @@ private:
 	int sizeOfPage;           /* size of a page    */
 	unsigned int minAddress;  /* minimun address   */
 	unsigned int maxAddress;  /* maximun address   */
-	MemNode *(*memoryList);   /* MemNode lists     */
+	List *memoryList;   /* Node lists     */
 
 public:
 	/* Constructor with no arguments               */
