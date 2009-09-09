@@ -20,7 +20,7 @@ FILE *traceTA;
  Input:
  Output:
 ******************************************************************/
-void initTest()
+void initTestAdv()
 {
 	traceTA = fopen("testAdvResult.out", "w");
 }
@@ -32,7 +32,7 @@ void initTest()
  Input:
  Output:
 ******************************************************************/
-void closeTest()
+void closeTestAdv()
 {
 	fclose(traceTA);
 }
@@ -44,7 +44,7 @@ void closeTest()
  Input:
  Output:
 ******************************************************************/
-void testMarkTaintedMemory()
+void testMarkTaintedMemoryAdv()
 {
 	int dataNum = 3;
 	int failNum = 0;
@@ -78,7 +78,7 @@ void testMarkTaintedMemory()
  Input:
  Output:
 ******************************************************************/
-void testDismarkTaintedMemory()
+void testDismarkTaintedMemoryAdv()
 {
 	int preDataNum = 3;
 	int dataNum = 3;
@@ -120,7 +120,7 @@ void testDismarkTaintedMemory()
  Input:
  Output:
 ******************************************************************/
-void testIsTainted()
+void testIsTaintedAdv()
 {
 	int preDataNum1 = 3;
 	int preDataNum2 = 3;
@@ -170,7 +170,7 @@ void testIsTainted()
  Input:
  Output:
 ******************************************************************/
-void testDismarkTaintedBlock()
+void testDismarkTaintedBlockAdv()
 {
 	int dataNum = 3;
 	int failNum = 0;
@@ -214,7 +214,7 @@ void testDismarkTaintedBlock()
  Input:
  Output:
 ******************************************************************/
-void testMarkTaintedBlock()
+void testMarkTaintedBlockAdv()
 {
 	int dataNum = 3;
 	int failNum = 0;

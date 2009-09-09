@@ -598,11 +598,14 @@ void MemoryRecorder::printState(FILE *output)
 			fprintf(output,"taint at 0x%x to 0x%x\n",it.Current->address,it.Current->address+31);
 			for(int j=0;j<32;j++){
 				unsigned int tmp = 1;
-				if(((it.Current->state)&(tmp<j))==1){
+				if((it.Current->state&(tmp<<j))!=0){
 					fprintf(output,"0x%x ",it.Current->address+j);
 				}
 			}
 			fprintf(output,"\n");
+			it.Current = it.Current->Next;
+			if(it.Current==NULL)
+				break;
 		}
 	}
 }

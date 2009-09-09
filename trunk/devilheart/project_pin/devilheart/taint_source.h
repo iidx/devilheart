@@ -19,14 +19,14 @@
 #define FILE_NAME "333.txt"
 
 /*the flag of tainted source*/
-int flag=0;
+extern int flag;
 
 /*record the size of file*/
-ADDRINT sizeH;
-ADDRINT sizeL;
+extern ADDRINT sizeH;
+extern ADDRINT sizeL;
 
 /*record the base address of file mapping to memory*/
-ADDRINT baseaddr;
+extern ADDRINT baseaddr;
 
 /*record the data of function CreatFileW*/
 struct CreateFileWData
@@ -35,7 +35,7 @@ struct CreateFileWData
 	ADDRINT CFWHandle;		// return value
 };
 
-CreateFileWData CFWdata[50];
+extern CreateFileWData CFWdata[50];
 
 //record the data of function CreateFileMappingW
 struct CreateFileMappingWData
@@ -46,7 +46,7 @@ struct CreateFileMappingWData
 	ADDRINT sizeLow;		// low  8 bit of file size
     CreateFileWData * Filedata;// point to CreateFileW
 };
-CreateFileMappingWData CFMWdata[50];
+extern CreateFileMappingWData CFMWdata[50];
 
 //record the data of function MapViewOfFile
 struct MapViewOfFileData
@@ -55,7 +55,7 @@ struct MapViewOfFileData
 	ADDRINT MVFReturnHandle;// return value
     CreateFileMappingWData * FileMappingdata;// point to CreateFileMappingW
 };
-MapViewOfFileData MVFdata[50];
+extern MapViewOfFileData MVFdata[50];
 
 
 /*find the handle match with the aim file name and sign the CreateFileW to -2*/

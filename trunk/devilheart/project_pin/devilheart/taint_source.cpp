@@ -9,8 +9,21 @@
 *******************************************************************/
 
 #include "taint_source.h"
+#include "decoder.h"
 
+/*the flag of tainted source*/
+int flag=0;
 
+/*record the size of file*/
+ADDRINT sizeH;
+ADDRINT sizeL;
+
+/*record the base address of file mapping to memory*/
+ADDRINT baseaddr;
+
+CreateFileWData CFWdata[50];
+CreateFileMappingWData CFMWdata[50];
+MapViewOfFileData MVFdata[50];
 
 /* ===================================================================== */
 /* Commandline Switches */
@@ -38,7 +51,7 @@ INT32 Usage()
  
 VOID FindObjectByName(wchar_t *name)
 {
-    flag=1;
+    
 	//用于比较文件名的字符串
 	string NameStr="";
 	//记录原指针
@@ -134,15 +147,20 @@ VOID FindMachingMVF(ADDRINT mappingHandle)
 }
 VOID SetMappingBase(ADDRINT base)
 {
-
+	
 	//搜索数组，找到被标记的结构进行赋值
     int i;
     for(i=0;MVFdata[i].sign!=0;i++)
     {
-        if(MVFdata[i].MVFReturnHandle==-2)
+		if(MVFdata[i].MVFReturnHandle==-2){
             MVFdata[i].MVFReturnHandle=base;
 			flag=1;
+			fprintf(output,"****************************************************\n");
+			fprintf(output,"Before the application\n");
+			memManager->printState(output);
+		}
     }
+	
 }
 
 ADDRINT getAddr()

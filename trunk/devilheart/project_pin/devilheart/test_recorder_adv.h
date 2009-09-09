@@ -17,24 +17,24 @@
 #include "mem_recorder_adv.h"
 
 /* test function markTaintedMemory*/
-void testMarkTaintedMemory();
+void testMarkTaintedMemoryAdv();
 
 /* test function dismarkTaintedMemory*/
-void testDismarkTaintedMemory();
+void testDismarkTaintedMemoryAdv();
 
 /* test function isTainted*/
-void testIsTainted();
+void testIsTaintedAdv();
 
 /* test function dismarkTaintedBlock*/
-void testDismarkTaintedBlock();
+void testDismarkTaintedBlockAdv();
 
 /* test function markTaintedBlock*/
-void testMarkTaintedBlock();
+void testMarkTaintedBlockAdv();
 
 /* init test function*/
-void initTest();
+void initTestAAdv();
 
 /* close the test*/
-void closeTest();
+void closeTestAdv();
 
 #endif

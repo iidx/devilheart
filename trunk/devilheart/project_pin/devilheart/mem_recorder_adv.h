@@ -12,7 +12,7 @@
 #ifndef _MEM_RECORDER_ADV_H
 #define _MEM_RECORDER_ADV_H
 
-#define DEFAULT_HASHCODE 1024;
+#define DEFAULT_HASHCODE 1024
 
 #include <stdlib.h>
 #include <fstream>

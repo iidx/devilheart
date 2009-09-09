@@ -100,6 +100,8 @@ VOID instruction(INS ins, VOID *v)
 	/*fprintf(trace,insName.c_str());
 	fprintf(trace,"\n");
 	decode(ins);*/
+	if(flag==0)
+		return;
 	OPCODE opcode  = INS_Opcode(ins);
 	UINT32 operandCount = INS_OperandCount(ins);
 	UINT insExt = INS_Extension(ins);
@@ -113,7 +115,6 @@ VOID TaintSource(RTN rtn, VOID *v)
 {
 	if(RTN_Name(rtn)=="CreateFileW")
     {
-        flag=1;
 		string FileName="";
         RTN_Open(rtn);
 
@@ -146,9 +147,9 @@ VOID TaintSource(RTN rtn, VOID *v)
 		else
 			if(RTN_Name(rtn)=="MapViewOfFileEx")
     {
-		
+		//flag=1;
         RTN_Open(rtn);
-
+		
         // Instrument malloc() to print the input argument value and the return value.
         RTN_InsertCall(rtn, IPOINT_BEFORE, (AFUNPTR)FindMachingMVF,
                        IARG_FUNCARG_ENTRYPOINT_VALUE, 0,
@@ -195,7 +196,7 @@ int main(int argc, char * argv[])
 {
 	MemoryRecorder recorder;
 	memManager = &recorder;
-	manulMarkTainted();
+	//manulMarkTainted();
 	/* print out the state of memory*/
 	
 
@@ -203,9 +204,14 @@ int main(int argc, char * argv[])
 	initHandlerTable();
 	beginHandle();
 
-	fprintf(output,"****************************************************\n");
+	/*fprintf(output,"****************************************************\n");
 	fprintf(output,"Before the application\n");
-	memManager->printState(output);
+	memManager->printState(output);*/
+
+	PIN_InitSymbols();
+	MVFdata[0].sign=0;
+    CFWdata[0].sign=0;
+    CFMWdata[0].sign=0;
 
     /* Initialize pin */
     PIN_Init(argc, argv);
