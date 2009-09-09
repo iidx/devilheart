@@ -20,7 +20,7 @@ FILE *traceE;
  Input:
  Output:
 ******************************************************************/
-void initTest()
+void initEvalue()
 {
 	traceE = fopen("evalueResult.out", "w");
 }
@@ -32,7 +32,7 @@ void initTest()
  Input:
  Output:
 ******************************************************************/
-void closeTest()
+void closeEvalue()
 {
 	fclose(traceE);
 }

@@ -16,7 +16,7 @@
 #include <stdio.h>
 #include <iomanip>
 #include <math.h>
-#include <afx.h>
+//#include <afx.h>
 #include <windows.h>
 #include <ctime>
 #include "mem_recorder.h"
@@ -33,9 +33,9 @@ void evalueIsTainted();
 void evalueMarkTaintedBlock();
 
 /* init test function*/
-void initTest();
+void initEvalue();
 
 /* close the test*/
-void closeTest();
+void closeEvalue();
 
 #endif
