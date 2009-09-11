@@ -26,6 +26,9 @@
 /* Data strctutor to record the state of memory*/
 MemoryRecorder *memManager;
 
+/* Flag to print out taint source*/
+int hasFound;
+
 /******************************************************************
  Title:printRegisters
  Function:This function is called to print value of some registers.
@@ -100,8 +103,19 @@ VOID instruction(INS ins, VOID *v)
 	/*fprintf(trace,insName.c_str());
 	fprintf(trace,"\n");
 	decode(ins);*/
-	if(flag==0)
+	if(flag==0&&hasFound==0)
 		return;
+	else
+		hasFound=1;
+	if(flag==1&&hasFound==1){
+		fprintf(output,"****************************************************\n");
+		fprintf(output,"Before the application\n");
+		ADDRINT baseAdd = getAddr();
+		ADDRINT length = getSizeL();
+		memManager->markTaintedBlock(baseAdd,length);
+		memManager->printState(output);
+		flag=0;
+	}
 	OPCODE opcode  = INS_Opcode(ins);
 	UINT32 operandCount = INS_OperandCount(ins);
 	UINT insExt = INS_Extension(ins);
@@ -113,6 +127,8 @@ VOID instruction(INS ins, VOID *v)
 
 VOID TaintSource(RTN rtn, VOID *v)
 {
+	if(flag ==0&&hasFound==1)
+		return;
 	if(RTN_Name(rtn)=="CreateFileW")
     {
 		string FileName="";
@@ -145,7 +161,8 @@ VOID TaintSource(RTN rtn, VOID *v)
         RTN_Close(rtn);
     }	
 		else
-			if(RTN_Name(rtn)=="MapViewOfFileEx")
+			//if(RTN_Name(rtn)=="MapViewOfFileEx")
+			if(RTN_Name(rtn)=="MapViewOfFile")
     {
 		//flag=1;
         RTN_Open(rtn);
@@ -194,6 +211,7 @@ VOID fini(INT32 code, VOID *v)
 *******************************************************************/
 int main(int argc, char * argv[])
 {
+	hasFound = 0;
 	MemoryRecorder recorder;
 	memManager = &recorder;
 	//manulMarkTainted();
