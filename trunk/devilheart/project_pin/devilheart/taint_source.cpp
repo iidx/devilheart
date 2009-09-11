@@ -155,9 +155,9 @@ VOID SetMappingBase(ADDRINT base)
 		if(MVFdata[i].MVFReturnHandle==-2){
             MVFdata[i].MVFReturnHandle=base;
 			flag=1;
-			fprintf(output,"****************************************************\n");
-			fprintf(output,"Before the application\n");
-			memManager->printState(output);
+			//fprintf(output,"****************************************************\n");
+			//fprintf(output,"Before the application\n");
+			//memManager->printState(output);
 		}
     }
 	
