@@ -45,40 +45,52 @@ INT32 Usage()
 }
 
 
-/* ===================================================================== */
-/* Analysis routines                                                     */
-/* ===================================================================== */
+/******************************************************************
+ Title:FindObjectByName
+ Function:get the file name from the args
+ Input:
+ wchar_t name: the source path of file opened
+ Output:
+******************************************************************/
  
 VOID FindObjectByName(wchar_t *name)
 {
     
-	//用于比较文件名的字符串
+	//store the file file name
 	string NameStr="";
-	//记录原指针
+	//store the source point
 	wchar_t* name0=name;
-	//将字符串内容读入NameStr以便比较
+	//read the content from the args name
 	for(;*name!='\0';name++)
 	{
 		NameStr+=*name;
 	}
-    //记录原指针
+    //store the source point
 	name=name0;
-    //如果确认读入目标文件则进行处理
+    //compare with the defined file name
 	if(NameStr.find(FILE_NAME)!=string::npos)
 	{
         int i;
-        //找到第一个未用结构的位置
+        //find the first place not used
         for(i=0;CFWdata[i].sign !=0;i++)
             ;
-        //将返回值设置为-2，作为标记通知此处应该赋返回值
+        //set the handle value to -2 so we sign it
         CFWdata[i].CFWHandle = -2;
         CFWdata[i].sign = 1;
         CFWdata[i+1].sign = 0;
 	}
 }
+
+/******************************************************************
+ Title:SetCFWReturnValue
+ Function:store the infomation from the function createfilew
+ Input:
+ ADDRINT fileHandle:the file handle returned from createfilew
+ Output:
+******************************************************************/
 VOID SetCFWReturnValue(ADDRINT fileHandle)
 {
-    //记录CreateFileW的返回值
+    //store the return value of function createfilew
 	if(fileHandle)
 	{
         int i;
@@ -92,10 +104,17 @@ VOID SetCFWReturnValue(ADDRINT fileHandle)
 	}
 }
 
+/******************************************************************
+ Title:FindMatchingCFMW
+ Function:find if args of CreateFileMapping match with the return value of CreateFileW
+ Input:
+ ADDRINT hfile:the file handle from args of CreateFIleMapping
+ ADDRINT offsethigh:the size of file high bit value
+ ADDRINT offsetlow: the size of file low bit value
+ Output:
+******************************************************************/
 VOID FindMatchingCFMW(ADDRINT hfile,ADDRINT offsethigh,ADDRINT offsetlow)
 {
-
-    //判断CreateFileMapping参数是否与CreateFileW返回值匹配，如匹配则进行处理
     int i;
     for(i=0;CFWdata[i].sign !=0;i++)
     {
@@ -113,10 +132,18 @@ VOID FindMatchingCFMW(ADDRINT hfile,ADDRINT offsethigh,ADDRINT offsetlow)
         }
     }
 }
+
+/******************************************************************
+ Title:SetCFMWReturnValue
+ Function:set the return value from CreateFileMappingW 
+ Input:
+ UINT32 mappingHandle: the file handle from the args of CreateFileMappingW
+ Output:
+******************************************************************/
 VOID SetCFMWReturnValue(UINT32 mappingHandle)
 {
 
-	//对每个标志位不为0的CFMWdata进行扫描，找到handle被标志为-2的那个进行赋值
+	//find each the handle value is -2 andl set the handle value
     int i;
     for(i=0;CFMWdata[i].sign!=0;i++)
     {
@@ -126,10 +153,17 @@ VOID SetCFMWReturnValue(UINT32 mappingHandle)
         }
     }
 }
+
+/******************************************************************
+ Title:FindMachingMVF
+ Function:find the matched handle of data stored in CFMWdata
+ Input:
+ ADDRINT mappingHandle:the return value of function MapViewOfFile
+ Output:
+******************************************************************/
 VOID FindMachingMVF(ADDRINT mappingHandle)
 {
 
-	//找到匹配的MapViewOfFile进行赋值和标记
     int i;
     for(i=0;CFMWdata[i].sign!=0;i++)
     {
@@ -145,10 +179,17 @@ VOID FindMachingMVF(ADDRINT mappingHandle)
         }
     }
 }
+
+/******************************************************************
+ Title:SetMappingBase
+ Function:set the matched MVFdata and set value to base
+ Input:
+ ADDRINT base:the base place of file mapping in memory
+ Output:
+******************************************************************/
 VOID SetMappingBase(ADDRINT base)
 {
 	
-	//搜索数组，找到被标记的结构进行赋值
     int i;
     for(i=0;MVFdata[i].sign!=0;i++)
     {
@@ -163,16 +204,32 @@ VOID SetMappingBase(ADDRINT base)
 	
 }
 
+/******************************************************************
+ Title:getAddr
+ Function:return the place of file mappint in memory
+ Input:
+ Output:MVFReturnHandle
+******************************************************************/
 ADDRINT getAddr()
 {
 	return MVFdata[0].MVFReturnHandle;
 }
-
+/******************************************************************
+ Title:getSizeH
+ Function:return the high bit of size of file
+ Input:
+ Output:sizeHigh
+******************************************************************/
 ADDRINT getSizeH()
 {
 	return MVFdata[0].FileMappingdata->sizeHigh;
 }
-
+/******************************************************************
+ Title:getSizeL
+ Function:return the low bit of size of file
+ Input:
+ Output:sizeLow
+******************************************************************/
 ADDRINT getSizeL()
 {
 	return MVFdata[0].FileMappingdata->sizeLow;
