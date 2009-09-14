@@ -123,7 +123,7 @@ VOID getMemAddress(ADDRINT addr)
 int defaultHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 {
 	string disIns = INS_Disassemble(ins);
-	fprintf(log,"Unhandle instruction: %s\n",disIns.c_str());
+	fprintf(log,"Unhandle or ignored instruction: %s\n",disIns.c_str());
 	countAllIns++;
 	return 0;
 }
