@@ -39,6 +39,9 @@ int leaRMHandler(INS,int,int,int,int,int,int);
 int movRIHandler(INS,int,int,int,int,int,int);
 int movMIHandler(INS,int,int,int,int,int,int);
 int repMovsbHandler(INS,int,int,int,int,int,int);
+int movzxRMHandler(INS,int,int,int,int,int,int);
+int movzxRRHandler(INS,int,int,int,int,int,int);
+int movsdHandler(INS,int,int,int,int,int,int);
 
 /* define handler table*/
 int (*handlerFun[])(INS ins,int srcA,int srcB,int srcC,
@@ -56,7 +59,10 @@ int (*handlerFun[])(INS ins,int srcA,int srcB,int srcC,
 		leaRMHandler,	//#10
 		movRIHandler,
 		movMIHandler,
-		repMovsbHandler
+		repMovsbHandler,
+		movzxRMHandler,
+		movzxRRHandler,	//#15
+		movsdHandler
 };
 
 /* handle result output file*/
@@ -521,6 +527,108 @@ int repMovsbHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dst
 
 
 /******************************************************************
+ Title:movzxRMHandler
+ Function:Handler to handle instruction "movzx reg,[mem addr]"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int movzxRMHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	if(INS_IsMemoryRead(ins)){
+		INS_InsertCall(ins,
+						   IPOINT_BEFORE,
+						   AFUNPTR(movzxRMHook),
+						   IARG_UINT32,
+                           REG(INS_OperandReg(ins, 0)),
+                           IARG_MEMORYREAD_EA,
+						   IARG_END);
+	}else{
+		fprintf(log,"Error at writing memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:movzxRRHandler
+ Function:Handler to handle instruction "movzx reg,reg"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int movzxRRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	
+	INS_InsertCall(ins,
+					   IPOINT_BEFORE,
+					   AFUNPTR(movzxRRHook),
+					   IARG_UINT32,
+                       REG(INS_RegW(ins, 0)),
+                       REG(INS_RegR(ins, 0)),
+					   IARG_END);
+	
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:movsdHandler
+ Function:Handler to handle instruction "movsd"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int movsdHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	if(INS_IsMemoryWrite(ins)&&INS_IsMemoryRead(ins)){
+		INS_InsertCall(ins,
+						   IPOINT_BEFORE,
+						   AFUNPTR(movsdHook),
+						   IARG_MEMORYREAD_EA,
+						   IARG_MEMORYWRITE_EA,
+						   IARG_END);
+	}else{
+		fprintf(log,"Error at writing memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+
+/******************************************************************
  Title:initHandlerFuns
  Function:To init ins<->handler table
  Input:
@@ -565,6 +673,9 @@ void initHandlerTable()
 	handlerTable[76562]=11;	//mov REG immd
 	handlerTable[76563]=12;	//mov [mem addr] immd
 	handlerTable[83507]=13;	//rep movsb
+	handlerTable[86578]=14;	//movzx reg [mem addr]
+	//handlerTable[86562]=15;	//movzx reg reg
+	handlerTable[83763]=16;	//movsd
 }
 
 
@@ -584,6 +695,7 @@ void handlerInsProxy(unsigned int insNum,INS ins)
 		int (*handler)(INS,int,int,int,int,int,int);
 		handler = handlerFun[0];
 		int result = handler(ins,srcA,srcB,srcC,dstA,dstB,dstC);
+		fprintf(log,"insNum: %d\n",insNum);
 	}else{
 		int handlerNum = handlerTable[insNum];
 		int (*handler)(INS,int,int,int,int,int,int);

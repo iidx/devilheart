@@ -88,3 +88,71 @@ VOID repMovsbHook(int ecx,ADDRINT *srcAddr,ADDRINT *dstAddr)
 		}
 	}
 }
+
+
+/******************************************************************
+ Title:movzxRMHook
+ Function:Hook to handle instruction "movzx R,M"
+ Input:
+ REG dstReg:dst reg
+ ADDRINT *addr:src memory address
+ Output:
+ VOID
+******************************************************************/
+VOID movzxRMHook(REG dstReg,ADDRINT * addr)
+{
+	unsigned int realAddress = (int)addr;
+	int state = memManager->isTainted(realAddress);
+	//int state = 0;
+	//fprintf(log,"Read address:0x%x\n",realAddress);
+	if(state==1){
+		if(REG_valid(dstReg)){
+			regState[dstReg] = 1;
+		}
+	}else{
+		if(REG_valid(dstReg)){
+			regState[dstReg] = 0;
+		}
+	}
+}
+
+
+/******************************************************************
+ Title:movzxRRHook
+ Function:Hook to handle instruction "movzx R,R"
+ Input:
+ REG dstReg:dst reg
+ REG dstReg:src reg
+ Output:
+ VOID
+******************************************************************/
+VOID movzxRRHook(REG dstReg,REG srcReg)
+{
+	if(regState[srcReg]==0){
+		regState[dstReg] = 1;
+	}else{
+		regState[dstReg] = 0;
+	}
+}
+
+
+/******************************************************************
+ Title:movsdHook
+ Function:Hook to handle instruction "movsd"
+ Input:
+ ADDRINT *srcAddr:src memory address
+ ADDRINT *dstAddr:dst memory address
+ Output:
+ VOID
+******************************************************************/
+VOID movsdHook(ADDRINT *srcAddr,ADDRINT *dstAddr)
+{
+	unsigned int realSrcAddress = (int)srcAddr;
+	unsigned int realDstAddress = (int)dstAddr;
+	
+	
+	//fprintf(output,"mov data from memory at 0x%x to 0x%x\n",realSrcAddress+i,realDstAddress+i);
+	if(memManager->isTainted(realSrcAddress)){
+		memManager->markTaintedMemory(realDstAddress);
+	}
+}

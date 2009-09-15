@@ -36,4 +36,13 @@ VOID movMRHook(REG srcReg,ADDRINT * addr);
 /* hook function to handle rep movsb*/
 VOID repMovsbHook(int ecx,ADDRINT *srcAddr,ADDRINT *dstAddr);
 
+/* hook function to handle movzx R,M*/
+VOID movzxRMHook(REG dstReg,ADDRINT * addr);
+
+/* hook function to handle movzx R,R*/
+VOID movzxRRHook(REG dstReg,REG srcReg);
+
+/* hook function to handle movsd*/
+VOID movsdHook(ADDRINT *srcAddr,ADDRINT *dstAddr);
+
 #endif
