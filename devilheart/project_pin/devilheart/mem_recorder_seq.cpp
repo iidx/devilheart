@@ -120,8 +120,11 @@ unsigned int MemoryRecorderSeq::isTainted(unsigned int address)
 	if(address<minAddress||address>maxAddress){
 		return FAULTADDRESS;
 	}
+
+	/* look for the list */
 	int location=(address-minAddress)/sizeOfPage;
 	MemNode* node = memoryList[location];
+
 	if (node==NULL){
 		return 0; //The node does not exist
 	}
@@ -151,9 +154,16 @@ bool MemoryRecorderSeq::markTaintedMemory(unsigned int address)
 	if(address<minAddress||address>maxAddress){
 		return false;
 	}
+
+	/* look for the list */
 	int location=(address-minAddress)/sizeOfPage;
 	MemNode *current = memoryList[location];
+
 	int section = address%32;
+
+	/* look for the node in the list.
+		If not exist, make a new node and set its state.
+		Else set the state of the existed one.          */
 	if(current==NULL){
 		memoryList[location] = (MemNode*)malloc(sizeof(MemNode));
 		memoryList[location]->address = address - address%32;
@@ -161,6 +171,7 @@ bool MemoryRecorderSeq::markTaintedMemory(unsigned int address)
 		memoryList[location]->state = (unsigned int)(1<<section);
 		return true;
 	}else{
+		/* handle the first node of the list */
 		if(current->address<=address&&address<(current->address+32)){
 			int state = current->state&((unsigned int)(1<<section));
 			if(state==0){
@@ -172,6 +183,8 @@ bool MemoryRecorderSeq::markTaintedMemory(unsigned int address)
 		}
 		MemNode *pre = current;
 		current = current->nextNode;
+
+		/* handle the other nodes of the list */
 		while(current!=NULL){
 			if(address>=current->address){
 				if(address<=(current->address+31)){
@@ -220,6 +233,8 @@ bool MemoryRecorderSeq::dismarkTaintedMemory(unsigned int address)
 	if(address<minAddress||address>maxAddress){
 		return false;
 	}
+
+	/* look for the list */
 	int location=(address-minAddress)/sizeOfPage;
 	MemNode *current = memoryList[location];
 	int section = address%32;
@@ -278,6 +293,8 @@ bool MemoryRecorderSeq::markTaintedBlock(unsigned int address, int length)
 	if(address<minAddress||(address+length)>maxAddress){
 		return false;
 	}
+
+	/* look for the first list including the lowest address */
 	int location=(address-minAddress)/sizeOfPage;
 	unsigned int currentAdd = address;
 	MemNode *currentNode = NULL;
@@ -302,6 +319,8 @@ bool MemoryRecorderSeq::markTaintedBlock(unsigned int address, int length)
 				continue;
 			}
 		}else{
+
+			/* handle the first node of the list */
 			preNode = memoryList[location];
 			currentNode = memoryList[location]->nextNode;
 			if(preNode->address<=currentAdd && preNode->address+32>currentAdd){
@@ -332,6 +351,8 @@ bool MemoryRecorderSeq::markTaintedBlock(unsigned int address, int length)
 				currentNode = preNode;
 				preNode = memoryList[location];
 			}
+
+			/* handle the other node of the list */
 			while(currentAdd<memoryList[location]->address+sizeOfPage && currentAdd<=address+length-1){
 				if(currentNode==NULL){
 					preNode->nextNode = (MemNode*)malloc(sizeof(MemNode));
