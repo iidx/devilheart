@@ -42,6 +42,19 @@ int repMovsbHandler(INS,int,int,int,int,int,int);
 int movzxRMHandler(INS,int,int,int,int,int,int);
 int movzxRRHandler(INS,int,int,int,int,int,int);
 int movsdHandler(INS,int,int,int,int,int,int);
+int callRHandler(INS,int,int,int,int,int,int);
+int testRIHandler(INS,int,int,int,int,int,int);
+int retHandler(INS,int,int,int,int,int,int);
+int leaveHandler(INS,int,int,int,int,int,int);
+int addRRHandler(INS,int,int,int,int,int,int);
+int addRIHandler(INS,int,int,int,int,int,int);
+int addMIHandler(INS,int,int,int,int,int,int);
+int subRRHandler(INS,int,int,int,int,int,int);
+int subRIHandler(INS,int,int,int,int,int,int);
+int subMIHandler(INS,int,int,int,int,int,int);
+int xorRRHandler(INS,int,int,int,int,int,int);
+int xorRIHandler(INS,int,int,int,int,int,int);
+int xorMIHandler(INS,int,int,int,int,int,int);
 
 /* define handler table*/
 int (*handlerFun[])(INS ins,int srcA,int srcB,int srcC,
@@ -626,6 +639,395 @@ int movsdHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
 	return 0;
 }
 
+
+/******************************************************************
+ Title:xorMIHandler
+ Function:Handler to handle instruction "xor [mem addr] immd"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int xorMIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:callRHandler
+ Function:Handler to handle instruction "call Reg"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int callRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:testRIHandler
+ Function:Handler to handle instruction "test Reg immd"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int testRIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:retHandler
+ Function:Handler to handle instruction "ret"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int retHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:leaveHandler
+ Function:Handler to handle instruction "leave"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int leaveHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:addRRHandler
+ Function:Handler to handle instruction "add REG REG"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int addRRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:addRIHandler
+ Function:Handler to handle instruction "addRI"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int addRIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:addMIHandler
+ Function:Handler to handle instruction "add [mem addr] immd"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int addMIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:subRRHandler
+ Function:Handler to handle instruction "sub Reg Reg"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int subRRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:subRIHandler
+ Function:Handler to handle instruction "sub Reg immd"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int subRIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:subMIHandler
+ Function:Handler to handle instruction "sub [mem addr] immd"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int subMIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:xorRRHandler
+ Function:Handler to handle instruction "xor Reg Reg"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int xorRRHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
+
+
+/******************************************************************
+ Title:xorRIHandler
+ Function:Handler to handle instruction "xor Reg immd"
+ Input:
+ INS ins:Instruction to be handled.
+ int srcA:The 1st src operand.
+ int srcB:The 2nd src operand.
+ int srcC:The 3rd src operand.
+ int dstA:The 1st dst operand.
+ int dstB:The 2nd dst operand.
+ int dstC:The 3rd dst operand.
+ Output:
+ int
+ Return value:-1 means unable to handle the instruction
+******************************************************************/
+int xorRIHandler(INS ins,int srcA,int srcB,int srcC,int dstA,int dstB,int dstC)
+{
+	/* This handler has not be completed*/
+	if(INS_IsMemoryRead(ins)){
+		
+	}else{
+		fprintf(log,"Error at reading memory\n");
+		return -1;
+	}
+	countAllIns++;
+	countHandledIns++;
+	return 0;
+}
 
 
 /******************************************************************
