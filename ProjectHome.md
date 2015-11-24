@@ -1,0 +1,1 @@
+Analyse the spread of taint of MS-Word based on the office software taint spreading model, by the use of PIN, a tool of dynamic code injection.
